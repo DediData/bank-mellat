@@ -270,105 +270,105 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 		$verify_sale_order_id = $post_sale_order_id;
 		$verify_sale_ref_id   = $post_sale_ref_id;
 		
-		if ( 0 === $result_code ) {
+		if ( 0 !== $result_code ) {
+			echo '<div class="bank-mellat-warning">' . esc_html( $settings['cancel_msg'] ) . '</div>';
+			return;
+		}
 			
-			if ( $client->fault ) {
-				return new WP_Error(
-					'bank-mellat-client-fault',
-					__( 'An error occurred while doing something with bank mellat plugin.', 'bank-mellat' ),
-					$settings['error_msg']
-				);
-			}
+		if ( $client->fault ) {
+			return new WP_Error(
+				'bank-mellat-client-fault',
+				__( 'An error occurred while doing something with bank mellat plugin.', 'bank-mellat' ),
+				$settings['error_msg']
+			);
+		}
+		
+		// Unused
+		// $ref_id = $post_ref_id;
+		
+		$parameters = array(
+			'terminalId'      => $terminal_id,
+			'userName'        => $user_name,
+			'userPassword'    => $user_password,
+			// 'saleOrderId'     => $order_id,
+			'saleOrderId'     => $verify_sale_order_id,
+			'saleReferenceId' => $verify_sale_ref_id,
+		);
+		
+		// $result_pay = $client->call( 'bpVerifyRequest', $parameters, $namespace );
+		$client->call( 'bpVerifyRequest', $parameters, $namespace );
+		$check = $client->call( 'bpInquiryRequest', $parameters, $namespace );
+		if ( '0' === $check ) {
+			// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+			$wpdb       = $GLOBALS['wpdb'];
+			$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
 			
-			// Unused
-			// $ref_id = $post_ref_id;
+			$wpdb->update( 
+				$table_name, 
+				array( 'order_status' => 'yes' ), 
+				array( 'order_orderid' => $order_id ), 
+				array( '%s' ), 
+				array( '%s' ) 
+			);
+							
+			// $settle = $client->call( 'bpSettleRequest', $parameters, $namespace );
+			$client->call( 'bpSettleRequest', $parameters, $namespace );
 			
-			$parameters = array(
-				'terminalId'      => $terminal_id,
-				'userName'        => $user_name,
-				'userPassword'    => $user_password,
-				// 'saleOrderId'     => $order_id,
-				'saleOrderId'     => $verify_sale_order_id,
-				'saleReferenceId' => $verify_sale_ref_id,
+			$wpdb->update( 
+				$table_name, 
+				array( 'order_settle' => 'yes' ), 
+				array( 'order_orderid' => $order_id ), 
+				array( '%s' ), 
+				array( '%s' ) 
 			);
 			
-			// $result_pay = $client->call( 'bpVerifyRequest', $parameters, $namespace );
-			$client->call( 'bpVerifyRequest', $parameters, $namespace );
-			$check = $client->call( 'bpInquiryRequest', $parameters, $namespace );
-			if ( '0' === $check ) {
-				// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
-				$wpdb       = $GLOBALS['wpdb'];
-				$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
-				
-				$wpdb->update( 
-					$table_name, 
-					array( 'order_status' => 'yes' ), 
-					array( 'order_orderid' => $order_id ), 
-					array( '%s' ), 
-					array( '%s' ) 
-				);
-								
-				// $settel = $client->call( 'bpSettleRequest', $parameters, $namespace );
-				$client->call( 'bpSettleRequest', $parameters, $namespace );
-				
-				$wpdb->update( 
-					$table_name, 
-					array( 'order_settle' => 'yes' ), 
-					array( 'order_orderid' => $order_id ), 
-					array( '%s' ), 
-					array( '%s' ) 
-				);
-				
-				$wpdb->update( 
-					$table_name, 
-					array( 'order_referenceId' => $verify_sale_ref_id ), 
-					array( 'order_orderid' => $order_id ), 
-					array( '%s' ), 
-					array( '%s' )
-				);
+			$wpdb->update( 
+				$table_name, 
+				array( 'order_referenceId' => $verify_sale_ref_id ), 
+				array( 'order_orderid' => $order_id ), 
+				array( '%s' ), 
+				array( '%s' )
+			);
 
-				$get_order = $wpdb->get_results(
-					$wpdb->prepare(
-						'SELECT * FROM %s WHERE order_orderid = %d',
-						$table_name,
-						$order_id
-					)
-				);
+			$get_order = $wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT * FROM %s WHERE order_orderid = %d',
+					$table_name,
+					$order_id
+				)
+			);
 
-				foreach ( $get_order as $order ) {
+			foreach ( $get_order as $order ) {
+				
+				echo '
+					<div class="bank-mellat-success">' . esc_html( $settings['successful_msg'] ) . '</div>'
+					. esc_html__( 'Order Number: ', 'bank-mellat' ) . esc_html( $order->order_id ) . '<br />'
+					. esc_html__( 'First Name and Last Name: ', 'bank-mellat' ) . esc_html( $order->order_name_surname ) . '<br />'
+					. esc_html__( 'Email Address: ', 'bank-mellat' ) . esc_html( $order->order_email ) . '<br />'
+					. esc_html__( 'Phone Number: ', 'bank-mellat' ) . esc_html( $order->order_phone ) . '<br />'
+					. esc_html__( 'Description: ', 'bank-mellat' ) . esc_html( $order->order_des ) . '<br />'
+					. esc_html__( 'Date: ', 'bank-mellat' ) . esc_html( $order->order_date ) . '<br />'
+					. esc_html__( 'IP: ', 'bank-mellat' ) . esc_html( $order->order_ip ) . '<br />'
+					. esc_html__( 'Amount (Rial): ', 'bank-mellat' ) . esc_html( $order->order_amount ) . '<br />'
+					. esc_html__( 'Digital order receipt: ', 'bank-mellat' ) . esc_html( $order->order_referenceId ) . '
+				';
+				
+				include_once plugin_dir_path( __FILE__ ) . '/inc/order_mail.php';
+				
+				if ( 'true' == $settings['SendSmS'] ) {
 					
-					echo '
-						<div class="bank-mellat-success">' . esc_html( $settings['successful_msg'] ) . '</div>'.
-						شماره سفارش: ' . $order->order_id . '</br>
-						نام و نام خانوادگي: ' . $order->order_name_surname . '</br>
-						آدرس ايميل: ' . $order->order_email . '</br>
-						شماره تلفن: ' . $order->order_phone . '</br>
-						توضيحات: ' . $order->order_des . '</br>
-						تاريخ: ' . $order->order_date . '</br>
-						آي پي: ' . $order->order_ip . '</br>
-						مبلغ(ريال): ' . $order->order_amount . '</br>
-						رسيد ديجيتالي سفارش: ' . $order->order_referenceId . '
-					';
+					$AdminMobile   = $settings['adminMobile'];
+					$smsUserName   = $settings['Sms_username'];
+					$smsPassword   = $settings['Sms_password'];
+					$smsLineNumber = $settings['sms_lineNumber'];
+					$sms_service   = $settings['sms_service'];
+					$sms_text      = $settings['Sms_text'];
+					$sms_text      = str_replace( '#', $order->order_id, $sms_text );
+					$sms_text      = str_replace( '$', number_format( $order->order_amount ), $sms_text );
 					
-					include_once plugin_dir_path( __FILE__ ) . '/inc/order_mail.php';
-					
-					if ( 'true' == $settings['SendSmS'] ) {
-						
-						$AdminMobile   = $settings['adminMobile'];
-						$smsUserName   = $settings['Sms_username'];
-						$smsPassword   = $settings['Sms_password'];
-						$smsLineNumber = $settings['sms_lineNumber'];
-						$sms_service   = $settings['sms_service'];
-						$sms_text      = $settings['Sms_text'];
-						$sms_text      = str_replace( '#', $order->order_id, $sms_text );
-						$sms_text      = str_replace( '$', number_format( $order->order_amount ), $sms_text );
-						
-						include_once plugin_dir_path( __FILE__ ) . '/inc/sms.php';
-					}
+					include_once plugin_dir_path( __FILE__ ) . '/inc/sms.php';
 				}
 			}
-		} else {
-			echo '<div class="bank-mellat-warning">' . $settings['cancel_msg'] . '</div>';
 		}
 	}
 }
