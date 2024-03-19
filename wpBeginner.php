@@ -9,7 +9,7 @@
  */
 
 define( 'WPBEGPAY_VERSION', '1.0.0' );
-
+ 
 define( 'WPBEGPAY_PATH', plugin_dir_path( __FILE__ ) );
 
 $wpBeginnerMellatBankGateway = new wpBeginner();
