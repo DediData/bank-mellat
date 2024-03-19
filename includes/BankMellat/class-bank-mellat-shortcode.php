@@ -31,7 +31,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 	/**
 	 * Constructor
 	 */
-	protected function __construct() {
+	public function __construct() {
 		$this->plugin_url    = BANK_MELLAT()->plugin_url;
 		$this->plugin_folder = BANK_MELLAT()->plugin_folder;
 		if ( ! class_exists( 'nusoap_base' ) ) {
