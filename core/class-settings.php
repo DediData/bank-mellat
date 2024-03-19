@@ -47,7 +47,7 @@ class settings{
 					'cancel_msg' => 'شما از پرداخت هزينه انصراف داديد .',
 					'error_msg' => 'در تکمیل انتقال وجه به حساب مشکلی رخ داده است...<br /> مبلغ کسر شده از حساب حداکثر تا 72 دیگر به حساب شما برگشت داده خواهد شد.',
 					'invalid_msg' => 'این درخواست از درگاه ملت معتبر شناسایی نشد',
-					'successfull_msg' => 'پرداخت اینترنتی با موفقیت انجام شد',
+					'successful_msg' => 'پرداخت اینترنتی با موفقیت انجام شد',
 					'email_sender' => 'info@yoursite.ir',
 					'email_subject' => 'پرداخت وجه با موفقیت انجام شد!',
 					'email_logoUrl' => '',
@@ -178,9 +178,9 @@ class settings{
 						   </td>
 						</tr>
 						<tr valign="top">
-						   <th scope="row"><label for="successfull_msg">پیغام برای پرداخت های موفق</label></th>
+						   <th scope="row"><label for="successful_msg">پیغام برای پرداخت های موفق</label></th>
 						   <td>
-							  <input id="successfull_msg" name="WPBEGPAY_settings_fields_arrays[successfull_msg]" type="text" value="<?php  esc_attr_e($settings['successfull_msg']); ?>" />
+							  <input id="successful_msg" name="WPBEGPAY_settings_fields_arrays[successful_msg]" type="text" value="<?php  esc_attr_e($settings['successful_msg']); ?>" />
 						   </td>
 						</tr>
 					 </table>

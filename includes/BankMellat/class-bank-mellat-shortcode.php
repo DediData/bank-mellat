@@ -167,7 +167,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 			$post_name_family = filter_input( \INPUT_POST, 'bank_mellat_name_family', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 			$post_phone       = filter_input( \INPUT_POST, 'bank_mellat_phone', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 			$post_description = filter_input( \INPUT_POST, 'bank_mellat_description', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-			$post_email       = filter_input( \INPUT_POST, 'bank_mellat_email', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			$post_email       = filter_input( \INPUT_POST, 'bank_mellat_email', \FILTER_SANITIZE_EMAIL );
 			$wpdb->insert( 
 				$table_name, 
 				array(
@@ -237,51 +237,67 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 	 * Process Callback.
 	 * 
 	 * @param array<mixed> $settings Settings Array.
-	 * @return void
+	 * @return mixed
+	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	private function process_callback( $settings ) {
 		$client    = new nusoap_client( 'https://bpm.shaparak.ir/pgwchannel/services/pgw?wsdl' );
 		$namespace = 'http://interfaces.core.sw.bps.com/';
 		
-		$err = $client->getError();
+		$error = $client->getError();
 		
-		if ( $err ) {
-			
-			echo '<div class="warning">' . $settings['invalid_msg'] . '</div>';
-			exit;
+		if ( $error ) {
+			return new WP_Error(
+				'bank-mellat-client-get-error',
+				__( 'An error occurred while doing something with bank mellat plugin.', 'bank-mellat' ),
+				$settings['invalid_msg']
+			);
 		}
 		
-		$result_code           = $_POST['ResCode'];
-		$terminalId            = $settings['MellatG_TerminalNumber'];
-		$userName              = $settings['MellatG_TerminalUser'];
-		$userPassword          = $settings['MellatG_TerminalPass'];
-		$refid                 = $_POST['refid'];
-		$order_id              = $_POST['SaleOrderId'];
-		$verifySaleOrderId     = $_POST['SaleOrderId'];
-		$verifySaleReferenceId = $_POST['SaleReferenceId'];
+		$post_res_code = filter_input( \INPUT_POST, 'bank_mellat_email', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		// Unused
+		// $post_ref_id        = filter_input( \INPUT_POST, 'bank_mellat_email', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$post_sale_order_id = filter_input( \INPUT_POST, 'bank_mellat_email', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$post_sale_ref_id   = filter_input( \INPUT_POST, 'bank_mellat_email', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+		$result_code   = $post_res_code;
+		$terminal_id   = $settings['MellatG_TerminalNumber'];
+		$user_name     = $settings['MellatG_TerminalUser'];
+		$user_password = $settings['MellatG_TerminalPass'];
+		// Unused
+		// $ref_id               = $post_ref_id;
+		$order_id             = $post_sale_order_id;
+		$verify_sale_order_id = $post_sale_order_id;
+		$verify_sale_ref_id   = $post_sale_ref_id;
 		
-		if ( 0 == $result_code ) {
+		if ( 0 === $result_code ) {
 			
 			if ( $client->fault ) {
-				echo '<div class="warning">' . $settings['error_msg'] . '</div>';
-				exit;
+				return new WP_Error(
+					'bank-mellat-client-fault',
+					__( 'An error occurred while doing something with bank mellat plugin.', 'bank-mellat' ),
+					$settings['error_msg']
+				);
 			}
 			
-			$refid = $_POST['refid'];
+			// Unused
+			// $ref_id = $post_ref_id;
 			
 			$parameters = array(
-				'terminalId'      => $terminalId,
-				'userName'        => $userName,
-				'userPassword'    => $userPassword,
-				'saleOrderId'     => $order_id,
-				'saleOrderId'     => $verifySaleOrderId,
-				'saleReferenceId' => $verifySaleReferenceId
+				'terminalId'      => $terminal_id,
+				'userName'        => $user_name,
+				'userPassword'    => $user_password,
+				// 'saleOrderId'     => $order_id,
+				'saleOrderId'     => $verify_sale_order_id,
+				'saleReferenceId' => $verify_sale_ref_id,
 			);
 			
-			$resultpay = $client->call( 'bpVerifyRequest', $parameters, $namespace );
-			$Check     = $client->call( 'bpInquiryRequest', $parameters, $namespace );
-			if ( '0' == $Check ) {
-				global $wpdb;
+			// $result_pay = $client->call( 'bpVerifyRequest', $parameters, $namespace );
+			$client->call( 'bpVerifyRequest', $parameters, $namespace );
+			$check = $client->call( 'bpInquiryRequest', $parameters, $namespace );
+			if ( '0' === $check ) {
+				// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+				$wpdb       = $GLOBALS['wpdb'];
 				$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
 				
 				$wpdb->update( 
@@ -292,7 +308,8 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 					array( '%s' ) 
 				);
 								
-				$settel = $client->call( 'bpSettleRequest', $parameters, $namespace );
+				// $settel = $client->call( 'bpSettleRequest', $parameters, $namespace );
+				$client->call( 'bpSettleRequest', $parameters, $namespace );
 				
 				$wpdb->update( 
 					$table_name, 
@@ -304,18 +321,24 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 				
 				$wpdb->update( 
 					$table_name, 
-					array( 'order_referenceId' => $verifySaleReferenceId ), 
+					array( 'order_referenceId' => $verify_sale_ref_id ), 
 					array( 'order_orderid' => $order_id ), 
 					array( '%s' ), 
 					array( '%s' )
 				);
 
-				$getorder = $wpdb->get_results( "SELECT * FROM $table_name WHERE order_orderid = $order_id" );
+				$get_order = $wpdb->get_results(
+					$wpdb->prepare(
+						'SELECT * FROM %s WHERE order_orderid = %d',
+						$table_name,
+						$order_id
+					)
+				);
 
-				foreach ( $getorder as $order ) {
+				foreach ( $get_order as $order ) {
 					
 					echo '
-						<div class="bank-mellat-success">' . $settings['successfull_msg'] . '</div>
+						<div class="bank-mellat-success">' . esc_html( $settings['successful_msg'] ) . '</div>'.
 						شماره سفارش: ' . $order->order_id . '</br>
 						نام و نام خانوادگي: ' . $order->order_name_surname . '</br>
 						آدرس ايميل: ' . $order->order_email . '</br>
