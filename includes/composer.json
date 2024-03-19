@@ -1,0 +1,8 @@
+{
+    "require": {
+        "econea/nusoap": "^0.9.17"
+    },
+	"config": {
+        "vendor-dir": "Composer"
+    }
+}
