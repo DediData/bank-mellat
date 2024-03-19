@@ -97,7 +97,9 @@ final class Bank_Mellat extends \DediData\Singleton {
 		$this->transfer_orders_to_new_table();
 		// Load plugin components
 
-		new BankMellat\Bank_Mellat_Shortcode();
+		if ( ! class_exists( 'BankMellat\Bank_Mellat_Shortcode' ) ) {
+			new BankMellat\Bank_Mellat_Shortcode();
+		}
 
 		// Load order's class
 		include_once $this->plugin_folder . 'core/class-orders.php';
