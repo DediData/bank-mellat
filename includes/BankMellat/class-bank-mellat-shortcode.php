@@ -53,7 +53,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 
 		echo "
 			<style>
-			.WPBEGPAY_Success, .WPBEGPAY_Warning, .bank-mellat-connecting {
+			.bank-mellat-success, .bank-mellat-warning, .bank-mellat-connecting {
 				direction: rtl;
 				border: 1px solid;
 				border-radius: 5px;
@@ -61,12 +61,12 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 				background-repeat: no-repeat;
 				background-position: calc(100% - 10px)  center;
 			}
-			.WPBEGPAY_Warning {
+			.bank-mellat-warning {
 				color: #9F6000;
 				background-color: #FEEFB3;
 				background-image: url('" . esc_url( $this->plugin_url . 'assets/images/warning.png' ) . "');
 			}
-			.WPBEGPAY_Success {
+			.bank-mellat-success {
 				color: #4F8A10;
 				background-color: #DFF2BF;
 				background-image: url('" . esc_url( $this->plugin_url . 'assets/images/success.png' ) . "');
@@ -186,7 +186,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 				)
 			);
 			?>
-			<style>.WPBEGPAY-form,.basic-grey,.elegant-aero{display:none;}</style>
+			<style>.bank-mellat-form,.basic-grey,.elegant-aero{display:none;}</style>
 
 			<script language='javascript' type='text/javascript'>
 				window.onload = function(){document.forms['Order_Form'].submit()}
@@ -217,18 +217,19 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 		}
 		
 		if ( $client->fault ) {
-		
-			echo '<h2>خطا!</h2><pre>';
-			print_r( $result );
-			echo '</pre>';
-			die();
-		} else {
-			$err = $client->getError();
-			if ( $err ) {
-				// Display the error
-				echo '<h2>خطا!</h2><pre>' . $err . '</pre>';
-				die();
-			}
+			return new WP_Error(
+				'bank-mellat-client-fault',
+				__( 'An error occurred while doing something with bank mellat plugin.', 'bank-mellat' ),
+				$result
+			);
+		}
+		$error = $client->getError();
+		if ( $error ) {
+			return new WP_Error(
+				'bank-mellat-client-error',
+				__( 'An error occurred while doing something with bank mellat plugin.', 'bank-mellat' ),
+				$error
+			);
 		}
 	}
 
@@ -314,7 +315,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 				foreach ( $getorder as $order ) {
 					
 					echo '
-						<div class="WPBEGPAY_Success">' . $settings['successfull_msg'] . '</div>
+						<div class="bank-mellat-success">' . $settings['successfull_msg'] . '</div>
 						شماره سفارش: ' . $order->order_id . '</br>
 						نام و نام خانوادگي: ' . $order->order_name_surname . '</br>
 						آدرس ايميل: ' . $order->order_email . '</br>
@@ -344,7 +345,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 				}
 			}
 		} else {
-			echo '<div class="WPBEGPAY_Warning">' . $settings['cancel_msg'] . '</div>';
+			echo '<div class="bank-mellat-warning">' . $settings['cancel_msg'] . '</div>';
 		}
 	}
 }
