@@ -48,12 +48,13 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 	 */
 	public function shortcode() {
 		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
-		$options  = $GLOBALS['WPBEGPAY_Options'];
-		$settings = get_option( 'WPBEGPAY_settings_fields_arrays', $options );
+		$settings = get_option( 'WPBEGPAY_settings_fields_arrays' );
 
 		echo "
 			<style>
-			.bank-mellat-success, .bank-mellat-warning, .bank-mellat-connecting {
+			.bank-mellat-success,
+			.bank-mellat-warning,
+			.bank-mellat-connecting {
 				direction: rtl;
 				border: 1px solid;
 				border-radius: 5px;
@@ -116,9 +117,10 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 		$default_themes = array( 'formA.html', 'formB.html', 'formC.html' );
 
 		if ( in_array( $settings['form'], $default_themes, true ) ) {
+			$settings['form'] = str_replace( '.html', '.php', $settings['form'] );
 			include_once plugin_dir_path( __FILE__ ) . '/../forms/' . $settings['form'];
 		} elseif ( ! in_array( $settings['form'], $default_themes, true ) ) {
-			include_once \WP_CONTENT_DIR . '/WPBEGPAY/' . $settings['form'];
+			include_once plugin_dir_path( __FILE__ ) . '/../forms/formA.php';
 		}
 		
 		$server_req_method = filter_input( \INPUT_SERVER, 'REQUEST_METHOD', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
