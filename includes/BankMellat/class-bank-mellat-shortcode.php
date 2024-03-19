@@ -205,7 +205,15 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 			<?php
 		}//end if
 		if ( '0' !== $result_code ) {
-			echo "<script>alert('امکان اتصال به درگاه پرداخت وجود ندارد!\\nکدخطا:$result_code');location.reload();</script>";
+			echo wp_kses(
+				sprintf(
+					"<script>alert('%s\\n%s:%s');location.reload();</script>",
+					esc_html__( 'Connecting to the payment gateway is not possible!', 'bank-mellat' ),
+					esc_html__( 'Error Code', 'bank-mellat' ),
+					$result_code
+				),
+				'script'
+			);
 		}
 		
 		if ( $client->fault ) {
@@ -213,7 +221,6 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 			echo '<h2>خطا!</h2><pre>';
 			print_r( $result );
 			echo '</pre>';
-			
 			die();
 		} else {
 			$err = $client->getError();
