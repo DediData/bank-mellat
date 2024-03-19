@@ -81,217 +81,10 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 
 		$post_res_code = filter_input( \INPUT_POST, 'ResCode', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		if ( ! isset( $post_res_code ) ) {
-			$default_themes = array( 'formA.html', 'formB.html', 'formC.html' );
-
-			if ( in_array( $settings['form'], $default_themes, true ) ) {
-				include_once plugin_dir_path( __FILE__ ) . '/../forms/' . $settings['form'];
-			} elseif ( ! in_array( $settings['form'], $default_themes, true ) ) {
-				include_once \WP_CONTENT_DIR . '/WPBEGPAY/' . $settings['form'];
-			}
-			
-			$server_req_method = filter_input( \INPUT_SERVER, 'REQUEST_METHOD', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-			$bank_mellat_price = filter_input( \INPUT_POST, 'bank_mellat_price', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-			if ( 'POST' === $server_req_method && null !== $bank_mellat_price ) {
-				$order_id   = time() . wp_rand( 100000, 999999 );
-				$local_date = gmdate( 'Ymd' );
-				$local_time = gmdate( 'His' );
-				$client     = new nusoap_client( 'https://bpm.shaparak.ir/pgwchannel/services/pgw?wsdl' );
-				$namespace  = 'http://interfaces.core.sw.bps.com/';
-				
-				$client_error = $client->getError();
-				if ( ! $client || $client_error ) {
-					echo '<div class="error"><p>' . esc_html( $client_error ) . '</p></div>';
-				} else {
-					$parameters = array(
-						'terminalId'     => $settings['MellatG_TerminalNumber'],
-						'userName'       => $settings['MellatG_TerminalUser'],
-						'userPassword'   => $settings['MellatG_TerminalPass'],
-						'orderId'        => $order_id,
-						'amount'         => $bank_mellat_price,
-						'localDate'      => $local_date,
-						'localTime'      => $local_time,
-						'additionalData' => '',
-						'callBackUrl'    => $this->get_current_url(),
-						'payerId'        => '0',
-					);
-							
-					$result        = $client->call( 'bpPayRequest', $parameters, $namespace );
-					$result_string = $result;        
-					$result_array  = explode( ',', $result_string );
-					$result_code   = $result_array[0];
-					
-					if ( '0' === $result_code ) {
-						$wpdb       = $GLOBALS['wpdb'];
-						$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
-						
-						$server_remote_addr = filter_input( \INPUT_SERVER, 'REMOTE_ADDR', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-						$wpdb->insert( 
-							$table_name, 
-							array(
-								'order_status'       => 'no',
-								'order_amount'       => $bank_mellat_price,
-								'order_date'         => gmdate( 'H:i:s Y/m/d' ),
-								'order_ip'           => $server_remote_addr,
-								'order_orderid'      => $order_id,
-								'order_referenceId'  => '',
-								'order_refid'        => $result_array[1],
-								'order_settle'       => 'no',
-								'order_name_surname' => $_POST['bank_mellat_name_family'],
-								'order_phone'        => $_POST['bank_mellat_phone'],
-								'order_des'          => $_POST['bank_mellat_description'],
-								'order_email'        => $_POST['bank_mellat_email'],
-							)
-						);
-						?>
-						<style>.WPBEGPAY-form,.basic-grey,.elegant-aero{display:none;}</style>
-
-						<script language='javascript' type='text/javascript'>
-							window.onload = function(){document.forms['Order_Form'].submit()}
-						</script>
-
-						<div class="bank-mellat-connecting">
-
-						<?php echo esc_html( $settings['connecting_msg'] ); ?>
-						
-						<form id="Order_Form" name="Order_Form" style="position:absolute;bottom:82px;left:35px;" action="https://bpm.shaparak.ir/pgwchannel/startpay.mellat" method="POST">
-						
-							<input type="hidden" name="RefId" value="<?php echo esc_attr( $result_array[1] ); ?>" />
-							<input name="submit button" type="submit" style="width:100%;" value="ورود به درگاه پرداخت" id="button" />
-						</form>
-						</div>
-						<?php
-					}//end if
-					if ( '0' !== $result_code ) {
-						echo "<script>alert('امکان اتصال به درگاه پرداخت وجود ندارد!\\nکدخطا:$result_code');location.reload();</script>";
-					}
-					
-					if ( $client->fault ) {
-					
-						echo '<h2>خطا!</h2><pre>';
-						print_r( $result );
-						echo '</pre>';
-						
-						die();
-					} else {
-						$err = $client->getError();
-						if ( $err ) {
-							// Display the error
-							echo '<h2>خطا!</h2><pre>' . $err . '</pre>';
-							die();
-						}
-					}
-				}
-			}
-		} elseif ( isset( $_POST['ResCode'] ) ) {
-		
-			$client    = new nusoap_client( 'https://bpm.shaparak.ir/pgwchannel/services/pgw?wsdl' );
-			$namespace = 'http://interfaces.core.sw.bps.com/';
-			
-			$err = $client->getError();
-			
-			if ( $err ) {
-				
-				echo '<div class="warning">' . $settings['invalid_msg'] . '</div>';
-				exit;
-			}
-			
-			$result_code           = $_POST['ResCode'];
-			$terminalId            = $settings['MellatG_TerminalNumber'];
-			$userName              = $settings['MellatG_TerminalUser'];
-			$userPassword          = $settings['MellatG_TerminalPass'];
-			$refid                 = $_POST['refid'];
-			$order_id              = $_POST['SaleOrderId'];
-			$verifySaleOrderId     = $_POST['SaleOrderId'];
-			$verifySaleReferenceId = $_POST['SaleReferenceId'];
-			
-			if ( 0 == $result_code ) {
-				
-				if ( $client->fault ) {
-					echo '<div class="warning">' . $settings['error_msg'] . '</div>';
-					exit;
-				}
-				
-				$refid = $_POST['refid'];
-				
-				$parameters = array(
-					'terminalId'      => $terminalId,
-					'userName'        => $userName,
-					'userPassword'    => $userPassword,
-					'saleOrderId'     => $order_id,
-					'saleOrderId'     => $verifySaleOrderId,
-					'saleReferenceId' => $verifySaleReferenceId
-				);
-				
-				$resultpay = $client->call( 'bpVerifyRequest', $parameters, $namespace );
-				$Check     = $client->call( 'bpInquiryRequest', $parameters, $namespace );
-				if ( '0' == $Check ) {
-					global $wpdb;
-					$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
-					
-					$wpdb->update( 
-						$table_name, 
-						array( 'order_status' => 'yes' ), 
-						array( 'order_orderid' => $order_id ), 
-						array( '%s' ), 
-						array( '%s' ) 
-					);
-									
-					$settel = $client->call( 'bpSettleRequest', $parameters, $namespace );
-					
-					$wpdb->update( 
-						$table_name, 
-						array( 'order_settle' => 'yes' ), 
-						array( 'order_orderid' => $order_id ), 
-						array( '%s' ), 
-						array( '%s' ) 
-					);
-					
-					$wpdb->update( 
-						$table_name, 
-						array( 'order_referenceId' => $verifySaleReferenceId ), 
-						array( 'order_orderid' => $order_id ), 
-						array( '%s' ), 
-						array( '%s' )
-					);
-
-					$getorder = $wpdb->get_results( "SELECT * FROM $table_name WHERE order_orderid = $order_id" );
-
-					foreach ( $getorder as $order ) {
-						
-						echo'
-							<div class="WPBEGPAY_Success">' . $settings['successfull_msg'] . '</div>
-							شماره سفارش: ' . $order->order_id . '</br>
-							نام و نام خانوادگي: ' . $order->order_name_surname . '</br>
-							آدرس ايميل: ' . $order->order_email . '</br>
-							شماره تلفن: ' . $order->order_phone . '</br>
-							توضيحات: ' . $order->order_des . '</br>
-							تاريخ: ' . $order->order_date . '</br>
-							آي پي: ' . $order->order_ip . '</br>
-							مبلغ(ريال): ' . $order->order_amount . '</br>
-							رسيد ديجيتالي سفارش: ' . $order->order_referenceId . '
-						';
-						
-						include_once plugin_dir_path( __FILE__ ) . '/inc/order_mail.php';
-						
-						if ( 'true' == $settings['SendSmS'] ) {
-							
-							$AdminMobile   = $settings['adminMobile'];
-							$smsUserName   = $settings['Sms_username'];
-							$smsPassword   = $settings['Sms_password'];
-							$smsLineNumber = $settings['sms_lineNumber'];
-							$sms_service   = $settings['sms_service'];
-							$sms_text      = $settings['Sms_text'];
-							$sms_text      = str_replace( '#', $order->order_id, $sms_text );
-							$sms_text      = str_replace( '$', number_format( $order->order_amount ), $sms_text );
-							
-							include_once plugin_dir_path( __FILE__ ) . '/inc/sms.php';
-						}
-					}
-				}
-			} else {
-				echo '<div class="WPBEGPAY_Warning">' . $settings['cancel_msg'] . '</div>';
-			}
+			$this->process_callback( $settings );
+			return;
 		}
+		$this->display_form( $settings );
 	}
 
 	/**
@@ -301,14 +94,250 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 	 */
 	private function get_current_url() {
 		$server_https = filter_input( \INPUT_SERVER, 'HTTPS', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		$current_url  = $server_https === 'on' ? 'https://' : 'http://';
+		$current_url  = 'on' === $server_https ? 'https://' : 'http://';
 		$server_name  = filter_input( \INPUT_SERVER, 'SERVER_NAME', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		$current_url .= $server_name;
 		$server_port  = filter_input( \INPUT_SERVER, 'SERVER_PORT', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if ( $server_port != '80' && $server_port != '443' ) {
+		if ( '80' !== $server_port && '443' !== $server_port ) {
 			$current_url .= ':' . $server_port;
 		}
 		$current_url .= filter_input( \INPUT_SERVER, 'REQUEST_URI', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		return $current_url;
+	}
+
+	/**
+	 * Display Form.
+	 * 
+	 * @param array<mixed> $settings Settings Array.
+	 * @return void
+	 * @SuppressWarnings(PHPMD.Superglobals)
+	 */
+	private function display_form( $settings ) {
+		$default_themes = array( 'formA.html', 'formB.html', 'formC.html' );
+
+		if ( in_array( $settings['form'], $default_themes, true ) ) {
+			include_once plugin_dir_path( __FILE__ ) . '/../forms/' . $settings['form'];
+		} elseif ( ! in_array( $settings['form'], $default_themes, true ) ) {
+			include_once \WP_CONTENT_DIR . '/WPBEGPAY/' . $settings['form'];
+		}
+		
+		$server_req_method = filter_input( \INPUT_SERVER, 'REQUEST_METHOD', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$bank_mellat_price = filter_input( \INPUT_POST, 'bank_mellat_price', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( 'POST' !== $server_req_method || null === $bank_mellat_price ) {
+			return;
+		}
+
+		$order_id   = time() . wp_rand( 100000, 999999 );
+		$local_date = gmdate( 'Ymd' );
+		$local_time = gmdate( 'His' );
+		$client     = new nusoap_client( 'https://bpm.shaparak.ir/pgwchannel/services/pgw?wsdl' );
+		$namespace  = 'http://interfaces.core.sw.bps.com/';
+		
+		$client_error = $client->getError();
+		if ( ! $client || $client_error ) {
+			echo '<div class="error"><p>' . esc_html( $client_error ) . '</p></div>';
+			return;
+		}
+
+		$parameters = array(
+			'terminalId'     => $settings['MellatG_TerminalNumber'],
+			'userName'       => $settings['MellatG_TerminalUser'],
+			'userPassword'   => $settings['MellatG_TerminalPass'],
+			'orderId'        => $order_id,
+			'amount'         => $bank_mellat_price,
+			'localDate'      => $local_date,
+			'localTime'      => $local_time,
+			'additionalData' => '',
+			'callBackUrl'    => $this->get_current_url(),
+			'payerId'        => '0',
+		);
+				
+		$result        = $client->call( 'bpPayRequest', $parameters, $namespace );
+		$result_string = $result;        
+		$result_array  = explode( ',', $result_string );
+		$result_code   = $result_array[0];
+		
+		if ( '0' === $result_code ) {
+			// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+			$wpdb       = $GLOBALS['wpdb'];
+			$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
+			
+			$server_remote_addr = filter_input( \INPUT_SERVER, 'REMOTE_ADDR', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			
+			$post_name_family = filter_input( \INPUT_POST, 'bank_mellat_name_family', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			$post_phone       = filter_input( \INPUT_POST, 'bank_mellat_phone', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			$post_description = filter_input( \INPUT_POST, 'bank_mellat_description', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			$post_email       = filter_input( \INPUT_POST, 'bank_mellat_email', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			$wpdb->insert( 
+				$table_name, 
+				array(
+					'order_status'       => 'no',
+					'order_amount'       => $bank_mellat_price,
+					'order_date'         => gmdate( 'H:i:s Y/m/d' ),
+					'order_ip'           => $server_remote_addr,
+					'order_orderid'      => $order_id,
+					'order_referenceId'  => '',
+					'order_refid'        => $result_array[1],
+					'order_settle'       => 'no',
+					'order_name_surname' => $post_name_family,
+					'order_phone'        => $post_phone,
+					'order_des'          => $post_description,
+					'order_email'        => $post_email,
+				)
+			);
+			?>
+			<style>.WPBEGPAY-form,.basic-grey,.elegant-aero{display:none;}</style>
+
+			<script language='javascript' type='text/javascript'>
+				window.onload = function(){document.forms['Order_Form'].submit()}
+			</script>
+
+			<div class="bank-mellat-connecting">
+
+			<?php echo esc_html( $settings['connecting_msg'] ); ?>
+			
+			<form id="Order_Form" name="Order_Form" style="position:absolute;bottom:82px;left:35px;" action="https://bpm.shaparak.ir/pgwchannel/startpay.mellat" method="POST">
+			
+				<input type="hidden" name="RefId" value="<?php echo esc_attr( $result_array[1] ); ?>" />
+				<input name="submit button" type="submit" style="width:100%;" value="ورود به درگاه پرداخت" id="button" />
+			</form>
+			</div>
+			<?php
+		}//end if
+		if ( '0' !== $result_code ) {
+			echo "<script>alert('امکان اتصال به درگاه پرداخت وجود ندارد!\\nکدخطا:$result_code');location.reload();</script>";
+		}
+		
+		if ( $client->fault ) {
+		
+			echo '<h2>خطا!</h2><pre>';
+			print_r( $result );
+			echo '</pre>';
+			
+			die();
+		} else {
+			$err = $client->getError();
+			if ( $err ) {
+				// Display the error
+				echo '<h2>خطا!</h2><pre>' . $err . '</pre>';
+				die();
+			}
+		}
+	}
+
+	/**
+	 * Process Callback.
+	 * 
+	 * @param array<mixed> $settings Settings Array.
+	 * @return void
+	 */
+	private function process_callback( $settings ) {
+		$client    = new nusoap_client( 'https://bpm.shaparak.ir/pgwchannel/services/pgw?wsdl' );
+		$namespace = 'http://interfaces.core.sw.bps.com/';
+		
+		$err = $client->getError();
+		
+		if ( $err ) {
+			
+			echo '<div class="warning">' . $settings['invalid_msg'] . '</div>';
+			exit;
+		}
+		
+		$result_code           = $_POST['ResCode'];
+		$terminalId            = $settings['MellatG_TerminalNumber'];
+		$userName              = $settings['MellatG_TerminalUser'];
+		$userPassword          = $settings['MellatG_TerminalPass'];
+		$refid                 = $_POST['refid'];
+		$order_id              = $_POST['SaleOrderId'];
+		$verifySaleOrderId     = $_POST['SaleOrderId'];
+		$verifySaleReferenceId = $_POST['SaleReferenceId'];
+		
+		if ( 0 == $result_code ) {
+			
+			if ( $client->fault ) {
+				echo '<div class="warning">' . $settings['error_msg'] . '</div>';
+				exit;
+			}
+			
+			$refid = $_POST['refid'];
+			
+			$parameters = array(
+				'terminalId'      => $terminalId,
+				'userName'        => $userName,
+				'userPassword'    => $userPassword,
+				'saleOrderId'     => $order_id,
+				'saleOrderId'     => $verifySaleOrderId,
+				'saleReferenceId' => $verifySaleReferenceId
+			);
+			
+			$resultpay = $client->call( 'bpVerifyRequest', $parameters, $namespace );
+			$Check     = $client->call( 'bpInquiryRequest', $parameters, $namespace );
+			if ( '0' == $Check ) {
+				global $wpdb;
+				$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
+				
+				$wpdb->update( 
+					$table_name, 
+					array( 'order_status' => 'yes' ), 
+					array( 'order_orderid' => $order_id ), 
+					array( '%s' ), 
+					array( '%s' ) 
+				);
+								
+				$settel = $client->call( 'bpSettleRequest', $parameters, $namespace );
+				
+				$wpdb->update( 
+					$table_name, 
+					array( 'order_settle' => 'yes' ), 
+					array( 'order_orderid' => $order_id ), 
+					array( '%s' ), 
+					array( '%s' ) 
+				);
+				
+				$wpdb->update( 
+					$table_name, 
+					array( 'order_referenceId' => $verifySaleReferenceId ), 
+					array( 'order_orderid' => $order_id ), 
+					array( '%s' ), 
+					array( '%s' )
+				);
+
+				$getorder = $wpdb->get_results( "SELECT * FROM $table_name WHERE order_orderid = $order_id" );
+
+				foreach ( $getorder as $order ) {
+					
+					echo '
+						<div class="WPBEGPAY_Success">' . $settings['successfull_msg'] . '</div>
+						شماره سفارش: ' . $order->order_id . '</br>
+						نام و نام خانوادگي: ' . $order->order_name_surname . '</br>
+						آدرس ايميل: ' . $order->order_email . '</br>
+						شماره تلفن: ' . $order->order_phone . '</br>
+						توضيحات: ' . $order->order_des . '</br>
+						تاريخ: ' . $order->order_date . '</br>
+						آي پي: ' . $order->order_ip . '</br>
+						مبلغ(ريال): ' . $order->order_amount . '</br>
+						رسيد ديجيتالي سفارش: ' . $order->order_referenceId . '
+					';
+					
+					include_once plugin_dir_path( __FILE__ ) . '/inc/order_mail.php';
+					
+					if ( 'true' == $settings['SendSmS'] ) {
+						
+						$AdminMobile   = $settings['adminMobile'];
+						$smsUserName   = $settings['Sms_username'];
+						$smsPassword   = $settings['Sms_password'];
+						$smsLineNumber = $settings['sms_lineNumber'];
+						$sms_service   = $settings['sms_service'];
+						$sms_text      = $settings['Sms_text'];
+						$sms_text      = str_replace( '#', $order->order_id, $sms_text );
+						$sms_text      = str_replace( '$', number_format( $order->order_amount ), $sms_text );
+						
+						include_once plugin_dir_path( __FILE__ ) . '/inc/sms.php';
+					}
+				}
+			}
+		} else {
+			echo '<div class="WPBEGPAY_Warning">' . $settings['cancel_msg'] . '</div>';
+		}
 	}
 }
