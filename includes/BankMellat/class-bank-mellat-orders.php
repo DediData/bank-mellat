@@ -1,41 +1,77 @@
 <?php
-class orders{
-	
-	/**
-	 * order_table_name
-	 *
-	 * @var mixed
-	 * @access public
-	 */
-	public $orders_table_name;
+/**
+ * Bank Mellat Orders Main Class
+ * 
+ * @package Bank_Mellat
+ */
 
-	public function __construct(){
-		// Wordpress database
-		global $wpdb;
+declare(strict_types=1);
+
+namespace BankMellat;
+
+/**
+ * Class Bank_Mellat_Orders
+ */
+final class Bank_Mellat_Orders extends \DediData\Singleton {
+
+	/**
+	 * Plugin URL
+	 * 
+	 * @var string $plugin_url
+	 */
+	protected $plugin_url;
+
+	/**
+	 * Plugin Folder
+	 * 
+	 * @var string $plugin_folder
+	 */
+	protected $plugin_folder;
+
+	/**
+	 * Orders Table Name
+	 *
+	 * @var string
+	 */
+	protected $orders_table_name;
+
+	/**
+	 * Constructor
+	 * 
+	 * @SuppressWarnings(PHPMD.Superglobals)
+	 */
+	public function __construct() {
+		$this->plugin_url    = BANK_MELLAT()->plugin_url;
+		$this->plugin_folder = BANK_MELLAT()->plugin_folder;
+		// WordPress database
+		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+		$wpdb = $GLOBALS['wpdb'];
 		
 		// Setup global database table names
-		$this->orders_table_name 	= $wpdb->prefix . 'WPBEGPAY_orders';
+		$this->orders_table_name = $wpdb->prefix . 'WPBEGPAY_orders';
 		
-		add_action( 'admin_menu', array( &$this, 'adminMenu' ) );
+		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
 		
-		require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . '/inc/class-orders-list.php' );
+		require_once $this->plugin_folder . '/inc/class-orders-list.php';
 	}
-	
-	public function adminMenu(){
-		
-		add_menu_page( __( 'درگاه پرداخت بانک ملت', 'WPBEGPAY' ), __( 'درگاه بانک ملت', 'WPBEGPAY' ), 'manage_options', 'bank-mellat', array( &$this, 'orders' ), plugins_url('bank-mellat/images/bankmellat.png') );
 
-		add_submenu_page( 'bank-mellat', __( 'گزارشات', 'WPBEGPAY' ), __( 'پرداخت ها', 'WPBEGPAY' ), 'manage_options', 'bank-mellat', array( &$this, 'orders' ) );
+	/**
+	 * Admin Menu
+	 * 
+	 * @return void
+	 */
+	public function admin_menu() {
+		add_menu_page( __( 'Bank Mellat Payment Gateway', 'bank-mellat' ), __( 'درگاه بانک ملت', 'bank-mellat' ), 'manage_options', 'bank-mellat', array( $this, 'orders' ), plugins_url('bank-mellat/images/bankmellat.png') );
+		add_submenu_page( 'bank-mellat', __( 'گزارشات', 'bank-mellat' ), __( 'پرداخت ها', 'bank-mellat' ), 'manage_options', 'bank-mellat', array( $this, 'orders' ) );
 	}
 	
 	/**
 	 * Orders page
 	 *
-	 * @since 2.7
 	 */
 	public function orders() {
 		
-	?>
+		?>
 		<div class="wrap">
 			<h2>
 				<?php _e( 'تراکنش ها', 'WPBEGPAY' ); ?>

@@ -102,8 +102,9 @@ final class Bank_Mellat extends \DediData\Singleton {
 		}
 
 		// Load order's class
-		include_once $this->plugin_folder . 'core/class-orders.php';
-		new \orders();
+		if ( ! class_exists( 'BankMellat\Bank_Mellat_Orders' ) ) {
+			new BankMellat\Bank_Mellat_Orders();
+		}
 
 		// Load settings's class
 		include_once $this->plugin_folder . 'core/class-settings.php';
