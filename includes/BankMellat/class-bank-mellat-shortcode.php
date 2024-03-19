@@ -151,16 +151,17 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 
 						<div class="bank-mellat-connecting">
 
-						<?php echo $settings['connecting_msg']; ?>
+						<?php echo esc_html( $settings['connecting_msg'] ); ?>
 						
 						<form id="Order_Form" name="Order_Form" style="position:absolute;bottom:82px;left:35px;" action="https://bpm.shaparak.ir/pgwchannel/startpay.mellat" method="POST">
 						
-							<input type="hidden" name="RefId" value="<?php echo $result_array[1]; ?>" />
+							<input type="hidden" name="RefId" value="<?php echo esc_attr( $result_array[1] ); ?>" />
 							<input name="submit button" type="submit" style="width:100%;" value="ورود به درگاه پرداخت" id="button" />
 						</form>
 						</div>
 						<?php
-					} else {
+					}//end if
+					if ( '0' !== $result_code ) {
 						echo "<script>alert('امکان اتصال به درگاه پرداخت وجود ندارد!\\nکدخطا:$result_code');location.reload();</script>";
 					}
 					
