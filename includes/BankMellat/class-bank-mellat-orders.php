@@ -70,7 +70,6 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 	 *
 	 */
 	public function orders() {
-		
 		?>
 		<div class="wrap">
 			<h2>
@@ -241,9 +240,10 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 
 		</div>
 
-<?php
+	<?php
 
-}
+	}
+
 	/**
 	 * Forms page
 	 *
