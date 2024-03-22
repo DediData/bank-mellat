@@ -240,8 +240,7 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 
 		</div>
 
-	<?php
-
+		<?php
 	}
 
 	/**
