@@ -67,7 +67,6 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 	
 	/**
 	 * Orders page
-	 *
 	 */
 	public function orders() {
 		?>
