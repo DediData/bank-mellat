@@ -242,13 +242,7 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 		$orders_table = $this->orders_table_name;
 		switch ( $arg ) {
 			case 'successful_pay_money':
-				$cache_key = 'sum_order_amount_yes';
-				$query     = wp_cache_get( $cache_key, 'bank_mellat_orders' );
-				if ( false === $query ) {
-					$query = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(order_amount) AS priceCount FROM %s WHERE order_status = 'yes'", $orders_table ) );
-					// Cache the result for future use
-					wp_cache_set( $cache_key, $query, 'bank_mellat_orders' );
-				}
+				$query = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(order_amount) AS priceCount FROM %s WHERE order_status = 'yes'", $orders_table ) );
 				break;
 			case 'successful_pay':
 				$query = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %s WHERE order_status = 'yes'", $orders_table ) );
