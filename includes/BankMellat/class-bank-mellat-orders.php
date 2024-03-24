@@ -61,32 +61,37 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 	 * @return void
 	 */
 	public function admin_menu() {
-		add_menu_page( __( 'Bank Mellat Payment Gateway', 'bank-mellat' ), __( 'درگاه بانک ملت', 'bank-mellat' ), 'manage_options', 'bank-mellat', array( $this, 'orders' ), plugins_url('bank-mellat/images/bankmellat.png') );
+		add_menu_page( __( 'Bank Mellat Payment Gateway', 'bank-mellat' ), __( 'درگاه بانک ملت', 'bank-mellat' ), 'manage_options', 'bank-mellat', array( $this, 'orders' ), plugins_url( 'bank-mellat/images/bankmellat.png' ) );
 		add_submenu_page( 'bank-mellat', __( 'گزارشات', 'bank-mellat' ), __( 'پرداخت ها', 'bank-mellat' ), 'manage_options', 'bank-mellat', array( $this, 'orders' ) );
 	}
 	
 	/**
 	 * Orders page
+	 * 
+	 * @return void
 	 */
 	public function orders() {
 		?>
 		<div class="wrap">
 			<h2>
-				<?php _e( 'تراکنش ها', 'WPBEGPAY' ); ?>
-				<?php
-					// If searched, output the query
-					if ( isset( $_GET['message'] ) && isset( $_GET['message'] ) == 'del' )
-						echo '<div id="message" class="updated notice is-dismissible below-h2"><p>' . sprintf( __( 'فرم "%s" با موفقیت حذف شد.' , 'WPBEGPAY' ), esc_html( $_GET['id'] ) ).'</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">بستن این اعلان.</span></button></div>';
-				?>
+			<?php _e( 'Transactions', 'bank-mellat' ); ?>
+			<?php
+			// If searched, output the query
+			$get_message = filter_input( \INPUT_GET, 'message', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			$get_id      = filter_input( \INPUT_GET, 'id', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			if ( null !== $get_message && 'del' === $get_message ) {
+				// translators: replace %s with id
+				echo '<div id="message" class="updated notice is-dismissible below-h2"><p>' . sprintf( esc_html__( 'The form "%s" successfully deleted.', 'bank-mellat' ), esc_html( $get_id ) ) . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' . esc_html__( 'Close this notification.', 'bank-mellat' ) . '</span></button></div>';
+			}
+			?>
 			</h2>
 			
 			<div class="stat-container">
-			
 				<!-- /stat-holder -->
 				<div class="stat-holder">
 					<div class="stat">							
-					<span id="total"><?php $this->orders_widget("succsessful_pay_money");?></span>
-					<?php _e( 'مجموع پرداخت های موفق', 'WPBEGPAY' ); ?>
+					<span id="total"><?php $this->orders_widget( 'successful_pay_money' ); ?></span>
+					<?php _e( 'مجموع پرداخت های موفق', 'bank-mellat' ); ?>
 					</div>
 				<!-- /stat -->						
 				</div>
@@ -94,8 +99,8 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 				<!-- /stat-holder -->
 				<div class="stat-holder">
 					<div class="stat">							
-					<span id="total"><?php $this->orders_widget("succsessful_pay");?></span>
-					<?php _e( 'پرداخت های موفق', 'WPBEGPAY' ); ?>
+					<span id="total"><?php $this->orders_widget( 'successful_pay' ); ?></span>
+					<?php _e( 'پرداخت های موفق', 'bank-mellat' ); ?>
 					</div>
 				<!-- /stat -->						
 				</div>
@@ -103,20 +108,20 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 				<!-- /stat-holder -->
 				<div class="stat-holder">
 					<div class="stat">							
-					<span id="total"><?php $this->orders_widget("unsuccsessful_pay");?></span>							
-					<?php _e( 'پرداخت های ناموفق', 'WPBEGPAY' ); ?>
+					<span id="total"><?php $this->orders_widget( 'unsuccessful_pay' ); ?></span>
+					<?php _e( 'پرداخت های ناموفق', 'bank-mellat' ); ?>
 					</div>
 				<!-- /stat -->						
 				</div>
 			</div>
 
 	   
-			<div id="poststuff">
+			<div id="post-stuff">
 
-				<div id="post-body" class="metabox-holder columns-2">
+				<div id="post-body" class="meta-box-holder columns-2">
 						<div id="post-body-content">
 							
-							<?php if(!isset($_GET['orderId'])){ ?>
+							<?php if ( ! isset( $_GET['orderId'] ) ) { ?>
 							<div class="meta-box-sortables ui-sortable">
 							   <form id="persons-table" method="GET">
 								<input type="hidden" name="page" value="<?php echo $_REQUEST['page']; ?>"/>
