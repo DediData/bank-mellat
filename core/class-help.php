@@ -9,7 +9,7 @@ class help{
 	
 	public function adminMenu(){
 		
-		add_submenu_page( 'bank-mellat', __( 'راهنما افزونه پرداخت آنلاین', 'WPBEGPAY' ), __( 'راهنما', 'WPBEGPAY' ), 'manage_options', 'WPBEGPAY-help', array( &$this, 'help' ) );
+		add_submenu_page( 'bank-mellat', __( 'راهنما افزونه پرداخت آنلاین', 'bank-mellat' ), __( 'راهنما', 'bank-mellat' ), 'manage_options', 'WPBEGPAY-help', array( &$this, 'help' ) );
 	}
 	
 	/**
@@ -20,7 +20,7 @@ class help{
 	public function help() { ?>
 		<div class="wrap">
 			<h2>
-				<?php _e( 'راهنما افزونه پرداخت آنلاین', 'WPBEGPAY' ); ?>
+				<?php _e( 'راهنما افزونه پرداخت آنلاین', 'bank-mellat' ); ?>
 			</h2>
 			<div id="bank-mellat-help">
 				<div class="accordion">

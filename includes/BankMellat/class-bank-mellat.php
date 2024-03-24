@@ -107,8 +107,9 @@ final class Bank_Mellat extends \DediData\Singleton {
 		}
 
 		// Load settings's class
-		include_once $this->plugin_folder . 'core/class-settings.php';
-		new \settings();
+		if ( ! class_exists( 'BankMellat\Bank_Mellat_Settings' ) ) {
+			new BankMellat\Bank_Mellat_Settings();
+		}
 		
 		// Load help's class
 		include_once $this->plugin_folder . 'core/class-help.php';
@@ -349,14 +350,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 		
 		$table_name     = $wpdb->prefix . 'WPBEGPAY_orders';
 		$old_table_name = $wpdb->prefix . 'M_B_P_Orders';
-		
-		$table_exists = wp_cache_get( 'table_exists_' . $old_table_name, 'bank_mellat_cache' );
-		if ( false === $table_exists ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-			$table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table_name ) );
-			// Cache for 1 hour
-			wp_cache_set( 'table_exists_' . $old_table_name, $table_exists, 'bank_mellat_cache', 3600 );
-		}
+		$table_exists   = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table_name ) );
 		if ( $table_exists !== $old_table_name ) {
 			return;
 		}
