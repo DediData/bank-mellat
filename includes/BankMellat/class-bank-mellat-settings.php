@@ -39,19 +39,17 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 	public function settings() {
 		?>
 		<div class="wrap">
-			<?php 
-				// Uncomment if this screen isn't added with add_options_page() 
-				// settings_errors(); 
+			<?php
+				// Uncomment if this screen isn't added with add_options_page()
+				// settings_errors();
 			?>
 			<h2>تنظیمات افزونه پرداخت آنلاین</h2>
 			<form method="post" action="options.php">
 			<?php
 				// Output the settings sections.
 				do_settings_sections( 'WPBEGPAY_settings' );
- 
 				// Output the hidden fields, nonce, etc.
 				settings_fields( 'WPBEGPAY_settings_group' );
-				
 				// Default setting's value
 				$default_settings = array(
 					'MellatG'                => '',
@@ -62,9 +60,9 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 					'cancel_msg'             => 'شما از پرداخت هزينه انصراف داديد.',
 					'error_msg'              => 'در تکمیل انتقال وجه به حساب مشکلی رخ داده است...<br /> مبلغ کسر شده از حساب حداکثر تا 72 دیگر به حساب شما برگشت داده خواهد شد.',
 					'invalid_msg'            => 'این درخواست از درگاه ملت معتبر شناسایی نشد',
-					'successful_msg'         => 'پرداخت اینترنتی با موفقیت انجام شد'
+					'successful_msg'         => 'پرداخت اینترنتی با موفقیت انجام شد',
 					'email_sender'           => 'info@yoursite.ir',
-					'email_subject'          => 'پرداخت وجه با موفقیت انجام شد!'
+					'email_subject'          => 'پرداخت وجه با موفقیت انجام شد!',
 					'email_logoUrl'          => '',
 					'email_headerText'       => 'خرید شما با موفقیت انجام شد!',
 					'email_Text'             => 'با تشکر از شما پرداخت وجه با موفقیت انجام شد!',
@@ -313,20 +311,28 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 									<?php 
 									$defualt_themes = scandir( plugin_dir_path( __FILE__ ) . '/../forms' );
 									foreach ( $defualt_themes as $theme ) {
-										if ( preg_match( '/.html/', $theme ) ) {
-											?>
-										<input type="radio" name="WPBEGPAY_settings_fields_arrays[form]" value="<?php echo $theme; ?>" <?php if ( $settings['form'] === $theme ) { echo 'checked="checked"'; } ?> />فرم <?php echo $theme; ?><br />
-											<?php
+										if ( ! preg_match( '/.html/', $theme ) ) {
+											continue;
 										}
+										if ( $settings['form'] === $theme ) {
+											$settings_form_theme = 'checked="checked"';
+										}
+										?>
+										<input type="radio" name="WPBEGPAY_settings_fields_arrays[form]" value="<?php echo esc_attr( $theme ); ?>" <?php echo esc_html( $settings_form_theme ); ?> />فرم <?php echo esc_html( $theme ); ?><br />
+										<?php
 									}
 									if ( is_dir( \WP_CONTENT_DIR . '/WPBEGPAY' ) ) {
 										$users_themes = scandir( \WP_CONTENT_DIR . '/WPBEGPAY' );
 										foreach ( $users_themes as $theme ) {
-											if ( preg_match( '/.html/', $theme ) ) {
-												?>
-										<input type="radio" name="WPBEGPAY_settings_fields_arrays[form]" value="<?php echo $theme; ?>" <?php if ( $settings['form'] === $theme ) { echo 'checked="checked"'; } ?> />فرم <?php echo $theme; ?><br />
-												<?php
+											if ( ! preg_match( '/.html/', $theme ) ) {
+												continue;
 											}
+											if ( $settings['form'] === $theme ) {
+												$settings_form_theme = 'checked="checked"';
+											}
+											?>
+											<input type="radio" name="WPBEGPAY_settings_fields_arrays[form]" value="<?php echo esc_attr( $theme ); ?>" <?php echo esc_html( $settings_form_theme ); ?> />فرم <?php echo esc_html( $theme ); ?><br />
+											<?php
 										}
 									}
 									?>
