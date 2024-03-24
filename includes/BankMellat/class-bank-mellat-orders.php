@@ -58,8 +58,8 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 	 * @return void
 	 */
 	public function admin_menu() {
-		add_menu_page( __( 'Bank Mellat Payment Gateway', 'bank-mellat' ), __( 'Bank Mellat Gateway', 'bank-mellat' ), 'manage_options', 'bank-mellat', array( $this, 'orders' ), $this->plugin_url . 'assets/images/bank-mellat.png' );
-		add_submenu_page( 'bank-mellat', __( 'Reports', 'bank-mellat' ), __( 'Payments', 'bank-mellat' ), 'manage_options', 'bank-mellat', array( $this, 'orders' ) );
+		add_menu_page( 'دروازه پرداخت بانک ملت', 'درگاه بانک ملت', 'manage_options', 'bank-mellat', array( $this, 'orders' ), $this->plugin_url . 'assets/images/bank-mellat.png' );
+		add_submenu_page( 'bank-mellat', 'گزارش‌ها', 'پرداخت‌ها', 'manage_options', 'bank-mellat', array( $this, 'orders' ) );
 	}
 	
 	/**
@@ -72,41 +72,35 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 		?>
 		<div class="wrap">
 			<h2>
-			<?php _e( 'Transactions', 'bank-mellat' ); ?>
+			تراکنش ها
 			<?php
 			// If searched, output the query
 			$get_message = filter_input( \INPUT_GET, 'message', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 			$get_id      = filter_input( \INPUT_GET, 'id', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 			if ( null !== $get_message && 'del' === $get_message ) {
 				// translators: replace %s with id
-				echo '<div id="message" class="updated notice is-dismissible below-h2"><p>' . sprintf( esc_html__( 'The form "%s" successfully deleted.', 'bank-mellat' ), esc_html( $get_id ) ) . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' . esc_html__( 'Close this notification.', 'bank-mellat' ) . '</span></button></div>';
+				echo '<div id="message" class="updated notice is-dismissible below-h2"><p>' . sprintf( 'فرم "%s" با موفقیت حذف شد.', esc_html( $get_id ) ) . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">بستن این اعلان.</span></button></div>';
 			}
 			?>
 			</h2>
 			<div class="stat-container">
-				<!-- /stat-holder -->
 				<div class="stat-holder">
 					<div class="stat">							
 					<span id="total"><?php $this->orders_widget( 'successful_pay_money' ); ?></span>
-					<?php _e( 'The total successful payments', 'bank-mellat' ); ?>
+					مجموع پرداخت های موفق
 					</div>
-				<!-- /stat -->
 				</div>
-				<!-- /stat-holder -->
 				<div class="stat-holder">
 					<div class="stat">							
 					<span id="total"><?php $this->orders_widget( 'successful_pay' ); ?></span>
-					<?php _e( 'Successful payments', 'bank-mellat' ); ?>
+					پرداخت های موفق
 					</div>
-				<!-- /stat -->
 				</div>
-				<!-- /stat-holder -->
 				<div class="stat-holder">
 					<div class="stat">							
 					<span id="total"><?php $this->orders_widget( 'unsuccessful_pay' ); ?></span>
-					<?php _e( 'Unsuccessful payments', 'bank-mellat' ); ?>
+					پرداخت های ناموفق
 					</div>
-				<!-- /stat -->
 				</div>
 			</div>
 			<div id="post-stuff">
@@ -148,8 +142,8 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 							}
 							if ( $get_order ) {
 								foreach ( $get_order as $order ) {
-									$settle = 'yes' === $order->order_settle ? esc_html__( 'It has been done', 'bank-mellat' ) : esc_html__( 'It has not been done', 'bank-mellat' );
-									$status = 'yes' === $order->order_status ? esc_html__( 'It has been done', 'bank-mellat' ) : esc_html__( 'It has not been done', 'bank-mellat' );
+									$settle = 'yes' === $order->order_settle ? 'انجام شده است' : 'انجام نشده است';
+									$status = 'yes' === $order->order_status ? 'انجام شده است' : 'انجام نشده است';
 									echo '
 										<style>
 										table, th, td {
@@ -163,51 +157,51 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 													<td>' . esc_html( $order->order_id ) . '</td>
 												</tr>
 												<tr>
-													<td>' . esc_html__( 'First and last name', 'bank-mellat' ) . '</td>
+													<td>نام و نام خانوادگی</td>
 													<td>' . esc_html( $order->order_name_surname ) . '</td>
 												</tr>
 												<tr>
-													<td>' . esc_html__( 'Email Address', 'bank-mellat' ) . '</td>
+													<td>آدرس ایمیل</td>
 													<td>' . esc_html( $order->order_email ) . '</td>
 												</tr>
 												<tr>
-													<td>' . esc_html__( 'Phone Number', 'bank-mellat' ) . '</td>
+													<td>شماره تلفن</td>
 													<td>' . esc_html( $order->order_phone ) . '</td>
 												</tr>
 												<tr>
-													<td>' . esc_html__( 'Description', 'bank-mellat' ) . '</td>
+													<td>توضیح</td>
 													<td>' . esc_html( $order->order_des ) . '</td>
 												</tr>
 												<tr>
-													<td>' . esc_html__( 'Payment Status', 'bank-mellat' ) . '</td>
+													<td>وضعیت پرداخت</td>
 													<td>' . esc_html( $status ) . '</td>
 												</tr>
 												<tr>
-													<td>' . esc_html__( 'Settle', 'bank-mellat' ) . '</td>
+													<td>ستل</td>
 													<td>' . esc_html( $settle ) . '</td>
 												</tr>
 												<tr>
-													<td>' . esc_html__( 'Date', 'bank-mellat' ) . '</td>
+													<td>تاریخ</td>
 													<td>' . esc_html( $order->order_date ) . '</td>
 												</tr>
 												<tr>
-													<td>' . esc_html__( 'IP', 'bank-mellat' ) . '</td>
+													<td>آی پی</td>
 													<td>' . esc_html( $order->order_ip ) . '</td>
 												</tr>
 												<tr>
-													<td>' . esc_html__( 'Order Amount', 'bank-mellat' ) . '</td>
+													<td>مبلغ سفارش</td>
 													<td>' . esc_html( $order->order_amount ) . '</td>
 												</tr>
 												<tr>
-													<td>' . esc_html__( 'Order Reference ID', 'bank-mellat' ) . '</td>
+													<td>شناسه مرجع سفارش</td>
 													<td>' . esc_html( $order->order_referenceId ) . '</td>
 												</tr>
 												<tr>
-													<td>' . esc_html__( 'Order ID', 'bank-mellat' ) . '</td>
+													<td>شناسه سفارش</td>
 													<td>' . esc_html( $order->order_orderid ) . '</td>
 												</tr>
 												<tr>
-													<td>' . esc_html__( 'Transaction Number', 'bank-mellat' ) . '</td>
+													<td>شماره تراکنش</td>
 													<td>' . esc_html( $order->order_refid ) . '</td>
 												</tr>
 											</tbody>
@@ -219,7 +213,7 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 							</div>
 						</div>
 						<?php
-						printf( '<a class="button" href="%s">%s</a>', esc_url( admin_url( 'admin.php?page=bank-mellat', 'admin' ) ), esc_html__( 'Return', 'bank-mellat' ) );
+						printf( '<a class="button" href="%s">%s</a>', esc_url( admin_url( 'admin.php?page=bank-mellat', 'admin' ) ), 'بازگشت' );
 					}//end if
 					?>
 					</div>

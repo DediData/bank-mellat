@@ -241,7 +241,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 	public function transfer_orders_notice() {
 		?>
 		<div class="notice notice-success is-dismissible">
-			<p><?php printf( '<a style="float:left" class="button" href="%s">%s</a>', esc_url( admin_url( 'admin.php?page=bank-mellat&transferBankMellatOrders=true' ) ), esc_html__( 'Transfer transactions', 'bank-mellat' ) ); ?><?php _e( 'It seems that you have some transactions from the previous version of the Bank Mellat plugin. To transfer these transactions to the new version, please click here.', 'bank-mellat' ); ?></p>
+			<p><?php printf( '<a style="float:left" class="button" href="%s">%s</a>', esc_url( admin_url( 'admin.php?page=bank-mellat&transferBankMellatOrders=true' ) ), 'انتقال تراکنش ها' ); ?><?php echo 'بنظر می رسد که شما تراکنش هایی را، از نسخه قبلی افزونه درگاه بانک ملت، داشته اید، برای انتقال تراکنش ها به نسخه جدید کلیک نمایید.'; ?></p>
 		</div>
 		<?php
 	}

@@ -201,7 +201,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 			<form id="Order_Form" name="Order_Form" style="position:absolute;bottom:82px;left:35px;" action="https://bpm.shaparak.ir/pgwchannel/startpay.mellat" method="POST">
 			
 				<input type="hidden" name="RefId" value="<?php echo esc_attr( $result_array[1] ); ?>" />
-				<input name="submit button" type="submit" style="width:100%;" value="<?php esc_attr_e( 'Enter the payment gateway', 'bank-mellat' ); ?>" id="button" />
+				<input name="submit button" type="submit" style="width:100%;" value="ورود به درگاه پرداخت" id="button" />
 			</form>
 			</div>
 			<?php
@@ -210,8 +210,8 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 			echo wp_kses(
 				sprintf(
 					"<script>alert('%s\\n%s:%s');location.reload();</script>",
-					esc_html__( 'Connecting to the payment gateway is not possible!', 'bank-mellat' ),
-					esc_html__( 'Error Code', 'bank-mellat' ),
+					'امکان اتصال به درگاه پرداخت وجود ندارد!',
+					'کد خطا',
 					$result_code
 				),
 				'script'
@@ -346,15 +346,15 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 			
 			echo '
 				<div class="bank-mellat-success">' . esc_html( $settings['successful_msg'] ) . '</div>'
-				. esc_html__( 'Order Number: ', 'bank-mellat' ) . esc_html( $order->order_id ) . '<br />'
-				. esc_html__( 'First Name and Last Name: ', 'bank-mellat' ) . esc_html( $order->order_name_surname ) . '<br />'
-				. esc_html__( 'Email Address: ', 'bank-mellat' ) . esc_html( $order->order_email ) . '<br />'
-				. esc_html__( 'Phone Number: ', 'bank-mellat' ) . esc_html( $order->order_phone ) . '<br />'
-				. esc_html__( 'Description: ', 'bank-mellat' ) . esc_html( $order->order_des ) . '<br />'
-				. esc_html__( 'Date: ', 'bank-mellat' ) . esc_html( $order->order_date ) . '<br />'
-				. esc_html__( 'IP: ', 'bank-mellat' ) . esc_html( $order->order_ip ) . '<br />'
-				. esc_html__( 'Amount (Rial): ', 'bank-mellat' ) . esc_html( $order->order_amount ) . '<br />'
-				. esc_html__( 'Digital order receipt: ', 'bank-mellat' ) . esc_html( $order->order_referenceId ) . '
+				. 'شماره سفارش: ' . esc_html( $order->order_id ) . '<br />'
+				. 'نام و نام خانوادگی: ' . esc_html( $order->order_name_surname ) . '<br />'
+				. 'آدرس ایمیل: ' . esc_html( $order->order_email ) . '<br />'
+				. 'شماره تلفن: ' . esc_html( $order->order_phone ) . '<br />'
+				. 'توضیح: ' . esc_html( $order->order_des ) . '<br />'
+				. 'تاریخ: ' . esc_html( $order->order_date ) . '<br />'
+				. 'آی پی: ' . esc_html( $order->order_ip ) . '<br />'
+				. 'مبلغ (ریال): ' . esc_html( $order->order_amount ) . '<br />'
+				. 'رسيد ديجيتالي سفارش: ' . esc_html( $order->order_referenceId ) . '
 			';
 			
 			include_once plugin_dir_path( __FILE__ ) . '/inc/order_mail.php';
