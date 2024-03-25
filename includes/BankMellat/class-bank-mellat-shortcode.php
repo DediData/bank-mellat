@@ -357,23 +357,14 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 				. 'رسيد ديجيتالي سفارش: ' . esc_html( $order->order_referenceId ) . '
 			';
 			
-			include_once plugin_dir_path( __FILE__ ) . '/inc/order_mail.php';
+			include_once BANK_MELLAT()->plugin_folder . '/includes/core/order-mail.php';
 			
 
 			if ( 'true' !== $settings['SendSmS'] ) {
 				return;
 			}
 				
-			$admin_mobile    = $settings['adminMobile'];
-			$sms_user_name   = $settings['Sms_username'];
-			$sms_password    = $settings['Sms_password'];
-			$sms_line_number = $settings['sms_lineNumber'];
-			$sms_service     = $settings['sms_service'];
-			$sms_text        = $settings['Sms_text'];
-			$sms_text        = str_replace( '#', $order->order_id, $sms_text );
-			$sms_text        = str_replace( '$', number_format( $order->order_amount ), $sms_text );
-			
-			include_once plugin_dir_path( __FILE__ ) . '/inc/sms.php';
+			include_once BANK_MELLAT()->plugin_folder . '/includes/core/sms.php';
 		}//end foreach
 	}
 }

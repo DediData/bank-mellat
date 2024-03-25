@@ -116,7 +116,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 			new BankMellat\Bank_Mellat_Help();
 		}
 		
-		include_once $this->plugin_folder . 'core/exportOrders.php';
+		include_once $this->plugin_folder . 'includes/core/export-orders.php';
 		
 		// Adds a Settings link to the Plugins page
 		add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );

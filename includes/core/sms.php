@@ -2,6 +2,15 @@
 
 defined('ABSPATH') or die("-1");
 
+$admin_mobile    = $settings['adminMobile'];
+$sms_user_name   = $settings['Sms_username'];
+$sms_password    = $settings['Sms_password'];
+$sms_line_number = $settings['sms_lineNumber'];
+$sms_service     = $settings['sms_service'];
+$sms_text        = $settings['Sms_text'];
+$sms_text        = str_replace( '#', $order->order_id, $sms_text );
+$sms_text        = str_replace( '$', number_format( $order->order_amount ), $sms_text );
+
 ?>
 <div style="display:none;">
 <?php
