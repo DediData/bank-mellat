@@ -158,39 +158,49 @@ final class Bank_Mellat_Orders_List extends WP_List_Table {
 	 * Process Bulk Actions
 	 * 
 	 * @return void
+	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	public function process_bulk_action() {
+		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 		$wpdb       = $GLOBALS['wpdb'];
 		$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
 
 		if ( 'delete' !== $this->current_action() ) {
 			return;
 		}
-		$ids = isset( $_REQUEST['id'] ) ? $_REQUEST['id'] : array();
-		if ( is_array($ids) ) {
+		$get_id = filter_input( \INPUT_GET, 'id', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$ids    = $get_id ?? array();
+		if ( is_array( $ids ) ) {
 			$ids = implode( ',', $ids );
 		}
-		if ( ! empty($ids) ) {
-			$wpdb->query( "DELETE FROM $table_name WHERE order_id =$ids" );
+		if ( null === $ids ) {
+			return;
 		}
+		$wpdb->query( $wpdb->prepare( 'DELETE FROM %s WHERE order_id = %d', $table_name, $ids ) );
 	}
-  
-    function prepare_items(){
-		
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'WPBEGPAY_orders'; // do not forget about tables prefix
 
-        $per_page = 10; // constant, how much records will be shown per page
-
-        $columns = $this->get_columns();
-        $hidden = array();
-        $sortable = $this->get_sortable_columns();
-		echo '<style type="text/css">';
-		echo '.wp-list-table .column-order_id { width: 5%; }';
-		echo '.wp-list-table .column-order_name_surname { width: 20%; }';
-		echo '.wp-list-table .column-order_email { width: 20%; }';
-		echo '.wp-list-table .column-order_date { width: 20%; }';
-		echo '</style>';
+	/**
+	 * Prepare Items
+	 * 
+	 * @return void
+	 * @SuppressWarnings(PHPMD.Superglobals)
+	 */
+	public function prepare_items() {
+		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+		$wpdb       = $GLOBALS['wpdb'];
+		$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
+		$per_page   = 10;
+		$columns    = $this->get_columns();
+		$hidden     = array();
+		$sortable   = $this->get_sortable_columns();
+		echo '
+			<style type="text/css">
+				.wp-list-table .column-order_id { width: 5%; }
+				.wp-list-table .column-order_name_surname { width: 20%; }
+				.wp-list-table .column-order_email { width: 20%; }
+				.wp-list-table .column-order_date { width: 20%; }
+			</style>
+		';
         // here we configure table headers, defined in our methods
         $this->_column_headers = array($columns, $hidden, $sortable);
 
