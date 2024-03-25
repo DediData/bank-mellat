@@ -1,72 +1,75 @@
 <?php
-class help{
-	
-	public function __construct(){
+/**
+ * Bank Mellat Help Main Class
+ * 
+ * @package Bank_Mellat
+ */
 
-		add_action( 'admin_menu', array( &$this, 'adminMenu' ) );
-		
-	}
-	
-	public function adminMenu(){
-		
-		add_submenu_page( 'bank-mellat', __( 'راهنما افزونه پرداخت آنلاین', 'bank-mellat' ), __( 'راهنما', 'bank-mellat' ), 'manage_options', 'WPBEGPAY-help', array( &$this, 'help' ) );
+declare(strict_types=1);
+
+namespace BankMellat;
+
+/**
+ * Class Bank_Mellat_Help
+ */
+final class Bank_Mellat_Help extends \DediData\Singleton {
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 	}
 	
 	/**
-	 * Orders page
-	 *
-	 * @since 2.7
+	 * Admin Menu
+	 * 
+	 * @return void
 	 */
-	public function help() { ?>
+	public function admin_menu() {
+		add_submenu_page( 'bank-mellat', 'راهنما افزونه پرداخت آنلاین', 'راهنما', 'manage_options', 'WPBEGPAY-help', array( $this, 'help' ) );
+	}
+	
+	/**
+	 * Help
+	 * 
+	 * @return void
+	 */
+	public function help() {
+		?>
 		<div class="wrap">
-			<h2>
-				<?php _e( 'راهنما افزونه پرداخت آنلاین', 'bank-mellat' ); ?>
-			</h2>
+			<h2>راهنما افزونه پرداخت آنلاین</h2>
 			<div id="bank-mellat-help">
 				<div class="accordion">
 					<div class="accordion-section">
 						<a class="accordion-section-title" href="#accordion-1">آدرس وبسایت سرویس دهنده های پیامک</a>
 						<div id="accordion-1" class="accordion-section-content">
-							<p>برای ورود به وبسایت سرویس دهنده کلیک کنید</br></br>
-								<a href="http://www.diakosms.ir" target="_blank">دیاکو اس ام اس</a></br>
-								<a href="http://sms.f2u.ir" target="_blank">f2usms</a></br>
-								<a href="http://sms.panel2u.ir" target="_blank">f2usms2</a></br>
-								<a href="http://login.payamakde.com" target="_blank">پیامکده</a></br>
-								<a href="http://sms.freer.ir" target="_blank">فریر اس ام اس</a></br>
-								<a href="http://panel.hezarnevis.com" target="_blank">hezarnevis</a></br>
-								<a href="http://sms.idehsms.ir" target="_blank">ایده اس ام اس</a></br>
-								<a href="http://ws.idehsms.ir" target="_blank">ایده اس ام اس (3000)</a></br>
-								<a href="http://ir-payamak.com" target="_blank">پیامک ایرانیان</a></br>
-								<a href="http://panel.panizsms.com" target="_blank">پانیز اس ام اس</a></br>
-								<a href="http://www.persiansms.info" target="_blank">پرشین اس ام اس</a></br>
-								<a href="http://www.p.mcisms.net" target="_blank">ایران اس ام اس</a></br>
-								<a href="http://samanpayamak.ir" target="_blank">سامان پیامک</a></br>
-								<a href="http://panel.sigmasms.ir" target="_blank">سیگما اس ام اس</a></br>
-								<a href="http://banehsms.ir" target="_blank">بانه اس ام اس</a></br>
-								<a href="http://shabnam-sms.ir" target="_blank">شبنم</a></br>
-								<a href="http://sms.dorbid.ir" target="_blank">اس ام اس کلیک</a></br>
-								<a href="http://spadsms.net/" target="_blank">اسـپــاد اس ام اس</a></br>
+							<p>برای ورود به وبسایت سرویس دهنده کلیک کنید<br /><br />
+								<a href="http://www.diakosms.ir" target="_blank">دیاکو اس ام اس</a><br />
+								<a href="http://sms.f2u.ir" target="_blank">f2usms</a><br />
+								<a href="http://sms.panel2u.ir" target="_blank">f2usms2</a><br />
+								<a href="http://login.payamakde.com" target="_blank">پیامکده</a><br />
+								<a href="http://sms.freer.ir" target="_blank">فریر اس ام اس</a><br />
+								<a href="http://panel.hezarnevis.com" target="_blank">hezarnevis</a><br />
+								<a href="http://sms.idehsms.ir" target="_blank">ایده اس ام اس</a><br />
+								<a href="http://ws.idehsms.ir" target="_blank">ایده اس ام اس (3000)</a><br />
+								<a href="http://ir-payamak.com" target="_blank">پیامک ایرانیان</a><br />
+								<a href="http://panel.panizsms.com" target="_blank">پانیز اس ام اس</a><br />
+								<a href="http://www.persiansms.info" target="_blank">پرشین اس ام اس</a><br />
+								<a href="http://www.p.mcisms.net" target="_blank">ایران اس ام اس</a><br />
+								<a href="http://samanpayamak.ir" target="_blank">سامان پیامک</a><br />
+								<a href="http://panel.sigmasms.ir" target="_blank">سیگما اس ام اس</a><br />
+								<a href="http://banehsms.ir" target="_blank">بانه اس ام اس</a><br />
+								<a href="http://shabnam-sms.ir" target="_blank">شبنم</a><br />
+								<a href="http://sms.dorbid.ir" target="_blank">اس ام اس کلیک</a><br />
+								<a href="http://spadsms.net/" target="_blank">اسـپــاد اس ام اس</a><br />
 								<a href="http://sms.webstudio.ir/" target="_blank">wstdsms</a>
 							</p>
 						</div>
-						<!--end .accordion-section-content-->
 					</div>
-					<!--end .accordion-section-->
-					<div class="accordion-section">
-						<a class="accordion-section-title" href="#accordion-2">انجام تنظیمات ایمیل</a>
-						<div id="accordion-2" class="accordion-section-content">
-							<p>
-							<p>در تصویر زیر قسمت های ایمیل توضیح داده شده است</p>
-							</br>
-							<img src="http://help.pay-system.ir/wp-content/uploads/2016/03/Email_Help.jpg" alt="" width="629px" height="811px" /></p>
-						</div>
-						<!--end .accordion-section-content-->
-					</div>
-					<!--end .accordion-section-->
 					<div class="accordion-section">
 						<a class="accordion-section-title" href="#accordion-3">شرح خطا های احتمالی در هنگام انجام پرداخت (بانک ملت)</a>
 						<div id="accordion-3" class="accordion-section-content">
-							<p>
 							<table dir="" style="text-align: right;" border="1" width="416">
 								<tbody>
 									<tr>
@@ -301,38 +304,23 @@ class help{
 									</tr>
 								</tbody>
 							</table>
-							</p>
 						</div>
-						<!--end .accordion-section-content-->
 					</div>
-					<!--end .accordion-section-->
 					<div class="accordion-section">
-						<a class="accordion-section-title" href="#accordion-4">ستل(settel) چیست؟</a>
+						<a class="accordion-section-title" href="#accordion-4">ستل (settel) چیست؟</a>
 						<div id="accordion-4" class="accordion-section-content">
 							<p>ستل در واقع یک تابع است که بعد از واریز وجه توسط کاربر و برگشت به سایت فروشنده ، این تابع اجرا میشه و دستوری به سرور بانک ارسال میکنه ، این دستور به سرور بانک اعلام میکنه که وجه پرداخت شده توسط مشتری رو به حساب مدیر سایت(فروشنده) واریز کنه بنابراین به محض اجرای تابع ستل وجه به صورت آنی به حساب مدیر سایت واریز میشه و قابل برداشت خواهد بود.
-							<div class="alert alert-error">توجه! فقط تراکنش های پرداختی توسط بانک ملت نیازمند ستل کردن هستند و دیگر درگاه ها نیاز به ستل کردن ندارند</div>
-							<div class="alert alert-error">توجه! اگر تراکنش موفقی ستل نشود به حساب پذیرنده واریز نمی شود!</div>
+								<div class="alert alert-error">توجه! فقط تراکنش های پرداختی توسط بانک ملت نیازمند ستل کردن هستند و دیگر درگاه ها نیاز به ستل کردن ندارند</div>
+								<div class="alert alert-error">توجه! اگر تراکنش موفقی ستل نشود به حساب پذیرنده واریز نمی شود!</div>
 							</p>
 						</div>
-						<!--end .accordion-section-content-->
 					</div>
-					<!--end .accordion-section-->
 					<div class="accordion-section">
 						<a class="accordion-section-title" href="#accordion-5">چگونه از این افزونه استفاده کنم؟</a>
 						<div id="accordion-5" class="accordion-section-content">
 							<p>برای استفاده از افزونه بانک ملت کافی است کد میانبر [WPBEGPAY_SC] را در نوشته ها و یا برگه های خود قرار دهید.</p>
 						</div>
-						<!--end .accordion-section-content-->
 					</div>
-					<!--end .accordion-section-->
-					<div class="accordion-section">
-						<a class="accordion-section-title" href="#accordion-6">مشکل در افزونه</a>
-						<div id="accordion-6" class="accordion-section-content">
-							<p>در صورت وجود هرگونه مشکل در افزونه آن را در <a href="http://wp-beginner.ir/%d8%a7%d9%81%d8%b2%d9%88%d9%86%d9%87-%d8%af%d8%b1%da%af%d8%a7%d9%87-%d9%be%d8%b1%d8%af%d8%a7%d8%ae%d8%aa-%d8%a8%d8%a7%d9%86%da%a9-%d9%85%d9%84%d8%aa-%d9%88%d8%b1%d8%af%d9%be%d8%b1%d8%b3/">صفحه افزونه</a> در وبسایت <a href="http://wp-beginner.ir">آموزش وردپرس</a> در بخش دیدگاه ها اعلام نمایید.</p>
-						</div>
-						<!--end .accordion-section-content-->
-					</div>
-					<!--end .accordion-section-->
 					<div class="accordion-section">
 						<a class="accordion-section-title" href="#accordion-7">استفاده از فرم سفارشی</a>
 						<div id="accordion-7" class="accordion-section-content">
@@ -340,20 +328,16 @@ class help{
 								هم اکنون در تنظیمات افزونه می توانید فرم را فعال نمایید.
 							</p>
 						</div>
-						<!--end .accordion-section-content-->
 					</div>
-					<!--end .accordion-section-->
 					<div class="accordion-section">
 						<a class="accordion-section-title" href="#accordion-8">افزودن سرویس دهنده پیامک</a>
 						<div id="accordion-8" class="accordion-section-content">
-							<p>برای افزودن سرویس دهنده پیامک مورد نظر شما به افزونه لطفا مستندات مربوط به سرویس دهنده پیامک را به ایمیل info@wp-beginner.ir ارسال نمایید.</p>
+							<p>برای افزودن سرویس دهنده پیامک مورد نظر شما به افزونه لطفا مستندات مربوط به سرویس دهنده پیامک را به ایمیل info@parsmizban.com ارسال نمایید.</p>
 						</div>
-						<!--end .accordion-section-content-->
 					</div>
-					<!--end .accordion-section-->									
 				</div>
 			</div>
-		</div><?php
+		</div>
+		<?php
 	}
-	
 }

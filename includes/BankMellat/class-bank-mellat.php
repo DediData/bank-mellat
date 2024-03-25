@@ -112,8 +112,9 @@ final class Bank_Mellat extends \DediData\Singleton {
 		}
 		
 		// Load help's class
-		include_once $this->plugin_folder . 'core/class-help.php';
-		new \help();
+		if ( ! class_exists( 'BankMellat\Bank_Mellat_Help' ) ) {
+			new BankMellat\Bank_Mellat_Help();
+		}
 		
 		include_once $this->plugin_folder . 'core/exportOrders.php';
 		

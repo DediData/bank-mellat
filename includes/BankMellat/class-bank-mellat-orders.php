@@ -49,7 +49,6 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 		// Setup global database table names
 		$this->orders_table_name = $wpdb->prefix . 'WPBEGPAY_orders';
 		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
-		require_once $this->plugin_folder . '/inc/class-orders-list.php';
 	}
 
 	/**
@@ -115,9 +114,12 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 							<form id="persons-table" method="get">
 							<input type="hidden" name="page" value="<?php echo esc_attr( $get_page ); ?>"/>
 							<?php
-								$table = new Orders_list();
-								$table->prepare_items();
-								$table->display();
+							if ( ! class_exists( 'WP_List_Table' ) ) {
+								require_once \ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+							}
+							$table = new Bank_Mellat_Orders_List();
+							$table->prepare_items();
+							$table->display();
 							?>
 							</form>
 						</div>
