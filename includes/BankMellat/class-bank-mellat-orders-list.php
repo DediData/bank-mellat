@@ -13,13 +13,16 @@ namespace BankMellat;
  * Class Bank_Mellat_Orders_List
  */
 final class Bank_Mellat_Orders_List extends WP_List_Table {
+
 	/**
 	 * Constructor
 	 * 
 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	public function __construct() {
-		$status          = $GLOBALS['status'];
+		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+		$status = $GLOBALS['status'];
+		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 		$page            = $GLOBALS['page'];
 		$construct_array = array(
 			'singular' => 'person',
@@ -53,14 +56,12 @@ final class Bank_Mellat_Orders_List extends WP_List_Table {
 		$order_id  = $item['order_id'];
 		$tablename = $wpdb->prefix . 'WPBEGPAY_orders';
 
-		$get_order = $wpdb->get_results( "SELECT * FROM  $tablename WHERE order_id = $order_id" );
+		$get_order = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %s WHERE order_id = %d', $tablename, $order_id ) );
 		if ( $get_order ) {
-			foreach ( $get_order as $order ) { 
-					$actions = array(
-						'view'   => sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=bank-mellat&orderId=' . $item['order_id'], 'admin' ), 'نمایش جزئیات' ),
-						'delete' => sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=bank-mellat&action=delete&id=' . $item['order_id'], 'admin' ), 'حذف' ),
-					);
-			}
+			$actions = array(
+				'view'   => sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=bank-mellat&orderId=' . $item['order_id'], 'admin' ), 'نمایش جزئیات' ),
+				'delete' => sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=bank-mellat&action=delete&id=' . $item['order_id'], 'admin' ), 'حذف' ),
+			);
 		}
 		return sprintf(
 			'%s %s',
@@ -159,19 +160,20 @@ final class Bank_Mellat_Orders_List extends WP_List_Table {
 	 * @return void
 	 */
 	public function process_bulk_action() {
-        $wpdb = $GLOBALS['wpdb'];
-        $table_name = $wpdb->prefix . 'WPBEGPAY_orders'; // do not forget about tables prefix
+		$wpdb       = $GLOBALS['wpdb'];
+		$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
 
-        if ('delete' === $this->current_action()) {
-            $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
-            if (is_array($ids)) $ids = implode(',', $ids);
-
-            if (!empty($ids)) {
-                $wpdb->query("DELETE FROM $table_name WHERE order_id =$ids");
-            }
-        }
-    }
-
+		if ( 'delete' !== $this->current_action() ) {
+			return;
+		}
+		$ids = isset( $_REQUEST['id'] ) ? $_REQUEST['id'] : array();
+		if ( is_array($ids) ) {
+			$ids = implode( ',', $ids );
+		}
+		if ( ! empty($ids) ) {
+			$wpdb->query( "DELETE FROM $table_name WHERE order_id =$ids" );
+		}
+	}
   
     function prepare_items(){
 		
