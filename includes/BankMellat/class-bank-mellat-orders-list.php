@@ -201,30 +201,34 @@ final class Bank_Mellat_Orders_List extends WP_List_Table {
 				.wp-list-table .column-order_date { width: 20%; }
 			</style>
 		';
-        // here we configure table headers, defined in our methods
-        $this->_column_headers = array($columns, $hidden, $sortable);
+		// Here we configure table headers, defined in our methods
+		$this->_column_headers = array( $columns, $hidden, $sortable );
 
-        // [OPTIONAL] process bulk action if any
-        $this->process_bulk_action();
+		// [OPTIONAL] process bulk action if any
+		$this->process_bulk_action();
 
-        // will be used in pagination settings
-        $total_items = $wpdb->get_var("SELECT COUNT(order_id) FROM $table_name");
+		// Will be used in pagination settings
+		$total_items = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(order_id) FROM %s', $table_name ) );
 
-        // prepare query params, as usual current page, order by and order direction
-        $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged']) - 1) : 0;
-        $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'order_id';
-        $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
+		// prepare query params, as usual current page, order by and order direction
+		$paged   = isset( $_GET['paged'] ) ? max( 0, intval( $_GET['paged'] ) - 1 ) : 0;
+		$orderby = isset( $_GET['orderby'] ) && in_array( $_GET['orderby'], array_keys( $this->get_sortable_columns() ), true ) ? $_GET['orderby'] : 'order_id';
+		$order   = isset( $_GET['order'] ) && in_array( $_GET['order'], array( 'asc', 'desc' ), true ) ? $_GET['order'] : 'desc';
 
-        // [REQUIRED] define $items array
-        // notice that last argument is ARRAY_A, so we will retrieve array
-        $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+		// [REQUIRED] define $items array
+		// notice that last argument is ARRAY_A, so we will retrieve array
+		$this->items = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %s ORDER BY %s %s LIMIT %d OFFSET %d', $table_name, $orderby, $order, $per_page, $paged ), \ARRAY_A );
 
-        // [REQUIRED] configure pagination
-        $this->set_pagination_args(array(
-            'total_items' => $total_items, // total items defined above
-            'per_page' => $per_page, // per page constant defined at top of method
-            'total_pages' => ceil($total_items / $per_page) // calculate pages count
-        ));
-    }
+		// [REQUIRED] configure pagination
+		$this->set_pagination_args(
+			array(
+				// total items defined above
+				'total_items' => $total_items,
+				// per page constant defined at top of method
+				'per_page'    => $per_page,
+				// calculate pages count
+				'total_pages' => ceil( $total_items / $per_page ),
+			)
+		);
+	}
 }
-?>
