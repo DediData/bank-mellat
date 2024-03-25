@@ -211,9 +211,12 @@ final class Bank_Mellat_Orders_List extends WP_List_Table {
 		$total_items = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(order_id) FROM %s', $table_name ) );
 
 		// prepare query params, as usual current page, order by and order direction
-		$paged   = isset( $_GET['paged'] ) ? max( 0, intval( $_GET['paged'] ) - 1 ) : 0;
-		$orderby = isset( $_GET['orderby'] ) && in_array( $_GET['orderby'], array_keys( $this->get_sortable_columns() ), true ) ? $_GET['orderby'] : 'order_id';
-		$order   = isset( $_GET['order'] ) && in_array( $_GET['order'], array( 'asc', 'desc' ), true ) ? $_GET['order'] : 'desc';
+		$get_paged   = filter_input( \INPUT_GET, 'paged', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$get_orderby = filter_input( \INPUT_GET, 'orderby', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$get_order   = filter_input( \INPUT_GET, 'order', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$paged       = null !== $get_paged ? max( 0, intval( $get_paged ) - 1 ) : 0;
+		$orderby     = null !== $get_orderby && in_array( $get_orderby, array_keys( $this->get_sortable_columns() ), true ) ? $get_orderby : 'order_id';
+		$order       = null !== $get_order && in_array( $get_order, array( 'asc', 'desc' ), true ) ? $get_orderby : 'desc';
 
 		// [REQUIRED] define $items array
 		// notice that last argument is ARRAY_A, so we will retrieve array
