@@ -114,7 +114,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	private function display_form( $settings ) {
-		$default_themes = array( 'formA.html', 'formB.html', 'formC.html' );
+		$default_themes = array( 'formA.php', 'formB.php', 'formC.php' );
 
 		if ( in_array( $settings['form'], $default_themes, true ) ) {
 			$settings['form'] = str_replace( '.html', '.php', $settings['form'] );

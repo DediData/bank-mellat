@@ -80,7 +80,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 					'Sms_password'           => '',
 					'sms_lineNumber'         => '',
 					'Sms_text'               => 'پرداخت # با مبلغ $ با موفقیت انجام شد.',
-					'form'                   => 'formA.html',
+					'form'                   => 'formA.php',
 				);
 				
 				// retrieve setting array from option's.
