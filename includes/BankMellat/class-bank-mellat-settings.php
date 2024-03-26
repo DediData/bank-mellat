@@ -309,7 +309,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 									<th scope="row">فرم پرداخت</th>
 									<td>
 									<?php 
-									$defualt_themes = scandir( plugin_dir_path( __FILE__ ) . '/../forms' );
+									$defualt_themes = scandir( BANK_MELLAT()->plugin_folder . 'includes/forms' );
 									foreach ( $defualt_themes as $theme ) {
 										if ( ! preg_match( '/.php/', $theme ) ) {
 											continue;
