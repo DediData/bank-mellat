@@ -51,7 +51,7 @@
                            </td>
                         </tr>
                         <tr>
-                           <td bgcolor="#f4f4f4" style="text-align:center;padding:17px 20px 12px 20px; font-family:tahoma; font-size:12px; line-height:4pt; color:#999999; border-top:1px #eee dashed;"><a href="%mail_link1%">%mail_adress1%</a> | <a href="%mail_link2%">%mail_adress2%</a> | <a href="%mail_link3%">%mail_adress3%</a></td>
+                           <td bgcolor="#f4f4f4" style="text-align:center;padding:17px 20px 12px 20px; font-family:tahoma; font-size:12px; line-height:4pt; color:#999999; border-top:1px #eee dashed;"><a href="%mail_link1%">%mail_address1%</a> | <a href="%mail_link2%">%mail_address2%</a> | <a href="%mail_link3%">%mail_address3%</a></td>
                         </tr>
                         <tr>
                            <td bgcolor="#F4F4F4" height="5" style="font-size:2px; line-height:0px;" valign="bottom">
