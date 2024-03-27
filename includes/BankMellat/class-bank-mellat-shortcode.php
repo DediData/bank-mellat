@@ -34,9 +34,6 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 	public function __construct() {
 		$this->plugin_url    = BANK_MELLAT()->plugin_url;
 		$this->plugin_folder = BANK_MELLAT()->plugin_folder;
-		if ( ! class_exists( 'nusoap_base' ) ) {
-			require_once $this->plugin_folder . '/includes/Composer/autoload.php';
-		}
 		add_shortcode( 'WPBEGPAY_SC', array( $this, 'shortcode' ) );
 	}
 
@@ -132,8 +129,11 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 		$order_id   = time() . wp_rand( 100000, 999999 );
 		$local_date = gmdate( 'Ymd' );
 		$local_time = gmdate( 'His' );
-		$client     = new nusoap_client( 'https://bpm.shaparak.ir/pgwchannel/services/pgw?wsdl' );
-		$namespace  = 'http://interfaces.core.sw.bps.com/';
+		if ( ! class_exists( 'nusoap_base' ) ) {
+			require_once $this->plugin_folder . '/includes/Composer/autoload.php';
+		}
+		$client    = new nusoap_client( 'https://bpm.shaparak.ir/pgwchannel/services/pgw?wsdl' );
+		$namespace = 'http://interfaces.core.sw.bps.com/';
 		
 		$client_error = $client->getError();
 		if ( ! $client || $client_error ) {
@@ -243,6 +243,9 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	private function process_callback( $settings ) {
+		if ( ! class_exists( 'nusoap_base' ) ) {
+			require_once $this->plugin_folder . '/includes/Composer/autoload.php';
+		}
 		$client    = new nusoap_client( 'https://bpm.shaparak.ir/pgwchannel/services/pgw?wsdl' );
 		$namespace = 'http://interfaces.core.sw.bps.com/';
 		
