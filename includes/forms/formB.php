@@ -56,7 +56,6 @@ input[type="submit"],
 	border: 1px solid #C5E2FF;
 	background: #FBFBFB;
 	outline: 0;
-	-webkit-box-shadow: inset 0 1px 6px #ECF3F5;
 	box-shadow: inset 0 1px 6px #ECF3F5;
 	font: 200 12px/25px tahoma, Arial, Helvetica, sans-serif;
 	height: 30px;
@@ -74,8 +73,6 @@ input[type="submit"],
 	background: #fbfbfb url(down-arrow.png) no-repeat right;
 	background: #fbfbfb url(down-arrow.png) no-repeat right;
 	appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
 	text-indent: .01px;
 	width: 70%
 }
@@ -86,8 +83,6 @@ input[type="submit"],
 	border: none;
 	color: #FFF;
 	box-shadow: 1px 1px 1px #4C6E91;
-	-webkit-box-shadow: 1px 1px 1px #4C6E91;
-	-moz-box-shadow: 1px 1px 1px #4C6E91;
 	text-shadow: 1px 1px 1px #5079A3
 }
 
@@ -95,7 +90,7 @@ input[type="submit"],
 	background: #3EB1DD
 }
 </style>
-<form dir="rtl" action="" method="post" class="elegant-aero">
+<form action="" method="post" class="elegant-aero">
 	<h1>پرداخت آنلاین وجه</h1>
 	<p>
 		<label for="bank_mellat_name_family"><span>نام و نام خانوادگی</span></label>
