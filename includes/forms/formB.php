@@ -98,12 +98,21 @@ input[type="submit"],
 <form dir="rtl" action="" method="post" class="elegant-aero">
 	<h1>پرداخت آنلاین وجه</h1>
 	<p>
-		<label><span>نام&nbsp;و&nbsp;نام&nbsp;خانوادگی</span><input type="text" name="bank_mellat_name_family"
-				required /></label>
-		<label><span>شماره&nbsp;تلفن</span><input type="number" name="bank_mellat_phone" required /></label>
-		<label><span>ايميل:</span><input type="email" name="bank_mellat_email" required /></label>
-		<label><span>مبلغ(ریال):</span><input type="number" name="bank_mellat_price" required /></label>
-		<label><span>توضيحات:</span><input type="text" name="bank_mellat_description" required /></label>
-		<label><span>&nbsp;</span><input type="submit" class="button" value="پرداخت"></label>
+		<label for="bank_mellat_name_family"><span>نام و نام خانوادگی</span></label>
+		<input type="text" id="bank_mellat_name_family" name="bank_mellat_name_family" required />
+
+		<label for="bank_mellat_phone"><span>شماره تلفن</span></label>
+		<input type="tel" id="bank_mellat_phone" name="bank_mellat_phone" required />
+
+		<label for="bank_mellat_email"><span>ایمیل:</span></label>
+		<input type="email" id="bank_mellat_email" name="bank_mellat_email" required />
+
+		<label for="bank_mellat_price"><span>مبلغ (ریال):</span></label>
+		<input type="number" id="bank_mellat_price" name="bank_mellat_price" required />
+
+		<label for="bank_mellat_description"><span>توضیحات:</span></label>
+		<input type="text" id="bank_mellat_description" name="bank_mellat_description" required />
+
+		<input type="submit" class="button" value="پرداخت">
 	</p>
 </form>
