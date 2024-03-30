@@ -54,7 +54,7 @@ final class Bank_Mellat_Orders_List extends WP_List_Table {
 		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 		$wpdb      = $GLOBALS['wpdb'];
 		$order_id  = $item['order_id'];
-		$tablename = $wpdb->prefix . 'WPBEGPAY_orders';
+		$tablename = $wpdb->prefix . 'bank_mellat_orders';
 
 		$get_order = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %s WHERE order_id = %d', $tablename, $order_id ) );
 		if ( $get_order ) {
@@ -163,7 +163,7 @@ final class Bank_Mellat_Orders_List extends WP_List_Table {
 	public function process_bulk_action() {
 		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 		$wpdb       = $GLOBALS['wpdb'];
-		$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
+		$table_name = $wpdb->prefix . 'bank_mellat_orders';
 
 		if ( 'delete' !== $this->current_action() ) {
 			return;
@@ -188,7 +188,7 @@ final class Bank_Mellat_Orders_List extends WP_List_Table {
 	public function prepare_items() {
 		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 		$wpdb       = $GLOBALS['wpdb'];
-		$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
+		$table_name = $wpdb->prefix . 'bank_mellat_orders';
 		$per_page   = 10;
 		$columns    = $this->get_columns();
 		$hidden     = array();

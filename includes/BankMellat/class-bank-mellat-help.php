@@ -27,7 +27,7 @@ final class Bank_Mellat_Help extends \DediData\Singleton {
 	 * @return void
 	 */
 	public function admin_menu() {
-		add_submenu_page( 'bank-mellat', 'راهنما افزونه پرداخت آنلاین', 'راهنما', 'manage_options', 'WPBEGPAY-help', array( $this, 'help' ) );
+		add_submenu_page( 'bank-mellat', 'راهنما افزونه پرداخت آنلاین', 'راهنما', 'manage_options', 'bank-mellat-help', array( $this, 'help' ) );
 	}
 	
 	/**
@@ -318,13 +318,13 @@ final class Bank_Mellat_Help extends \DediData\Singleton {
 					<div class="accordion-section">
 						<a class="accordion-section-title" href="#accordion-5">چگونه از این افزونه استفاده کنم؟</a>
 						<div id="accordion-5" class="accordion-section-content">
-							<p>برای استفاده از افزونه بانک ملت کافی است کد میانبر [WPBEGPAY_SC] را در نوشته ها و یا برگه های خود قرار دهید.</p>
+							<p>برای استفاده از افزونه بانک ملت کافی است کد میانبر [BANK_MELLAT] را در نوشته ها و یا برگه های خود قرار دهید.</p>
 						</div>
 					</div>
 					<div class="accordion-section">
 						<a class="accordion-section-title" href="#accordion-7">استفاده از فرم سفارشی</a>
 						<div id="accordion-7" class="accordion-section-content">
-							<p>برای استفاده از فرم سفارشی خودتان براساس یکی از فرم های موجود افزونه که در پوشه forms موجود هستند، فرم خود را ویرایش کرده و سپس در پوشه wp-content وردپرس پوشه ای به نام WPBEGPAY ایجاد کرده و فرم خود را درون آن قرار دهید.
+							<p>برای استفاده از فرم سفارشی خودتان براساس یکی از فرم های موجود افزونه که در پوشه forms موجود هستند، فرم خود را ویرایش کرده و سپس در پوشه wp-content وردپرس پوشه ای به نام bank-mellat-custom ایجاد کرده و فرم خود را درون آن قرار دهید.
 								هم اکنون در تنظیمات افزونه می توانید فرم را فعال نمایید.
 							</p>
 						</div>

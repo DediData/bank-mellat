@@ -34,6 +34,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 	public function __construct() {
 		$this->plugin_url    = BANK_MELLAT()->plugin_url;
 		$this->plugin_folder = BANK_MELLAT()->plugin_folder;
+		add_shortcode( 'BANK_MELLAT', array( $this, 'shortcode' ) );
 		add_shortcode( 'WPBEGPAY_SC', array( $this, 'shortcode' ) );
 	}
 
@@ -45,7 +46,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 	 */
 	public function shortcode() {
 		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
-		$settings = get_option( 'WPBEGPAY_settings_fields_arrays' );
+		$settings = get_option( 'bank_mellat_settings_fields_arrays' );
 
 		echo "
 			<style>
@@ -115,9 +116,9 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 
 		if ( in_array( $settings['form'], $default_themes, true ) ) {
 			$settings['form'] = str_replace( '.html', '.php', $settings['form'] );
-			include_once BANK_MELLAT()->plugin_folder . '/includes/forms/' . $settings['form'];
+			include_once $this->plugin_folder . '/includes/forms/' . $settings['form'];
 		} elseif ( ! in_array( $settings['form'], $default_themes, true ) ) {
-			include_once BANK_MELLAT()->plugin_folder . '/includes/forms/formA.php';
+			include_once $this->plugin_folder . '/includes/forms/formA.php';
 		}
 		
 		$server_req_method = filter_input( \INPUT_SERVER, 'REQUEST_METHOD', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
@@ -162,7 +163,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 		if ( '0' === $result_code ) {
 			// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 			$wpdb       = $GLOBALS['wpdb'];
-			$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
+			$table_name = $wpdb->prefix . 'bank_mellat_orders';
 			
 			$server_remote_addr = filter_input( \INPUT_SERVER, 'REMOTE_ADDR', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 			
@@ -308,7 +309,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 		}
 		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 		$wpdb       = $GLOBALS['wpdb'];
-		$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
+		$table_name = $wpdb->prefix . 'bank_mellat_orders';
 		
 		$wpdb->update( 
 			$table_name, 
@@ -393,7 +394,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 			<p>رسيد ديجيتالي سفارش: ' . $order->order_referenceId . '</p>
 		';
 
-		$message = file_get_contents( BANK_MELLAT()->plugin_folder . 'core/order-mail-template.php' );
+		$message = file_get_contents( $this->plugin_folder . 'core/order-mail-template.php' );
 		$message = str_replace( '%mail_header%', $settings['email_headerText'], $message );
 		$message = str_replace( '%mail_text%', $settings['email_Text'], $message );
 		$message = str_replace( '%mail_logo%', $settings['email_logoUrl'], $message );

@@ -47,7 +47,7 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 		$wpdb = $GLOBALS['wpdb'];
 		// Setup global database table names
-		$this->orders_table_name = $wpdb->prefix . 'WPBEGPAY_orders';
+		$this->orders_table_name = $wpdb->prefix . 'bank_mellat_orders';
 		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
 	}
 
@@ -133,7 +133,7 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 							<?php
 							// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 							$wpdb       = $GLOBALS['wpdb'];
-							$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
+							$table_name = $wpdb->prefix . 'bank_mellat_orders';
 							$cache_key  = 'bank_mellat_get_order_' . $get_order_id;
 							$get_order  = wp_cache_get( $cache_key, 'bank_mellat_orders' );
 							// If the data is not cached, fetch it from the database and cache it

@@ -93,7 +93,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 		$wpdb = $GLOBALS['wpdb'];
 		
 		// Setup global database table names
-		$this->orders_table_name = $wpdb->prefix . 'WPBEGPAY_orders';
+		$this->orders_table_name = $wpdb->prefix . 'bank_mellat_orders';
 		$this->transfer_orders_to_new_table();
 		// Load plugin components
 
@@ -107,9 +107,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 		}
 
 		// Load settings's class
-		if ( ! class_exists( 'BankMellat\Bank_Mellat_Settings' ) ) {
-			new BankMellat\Bank_Mellat_Settings();
-		}
+		new BankMellat\Bank_Mellat_Settings();
 		
 		// Load help's class
 		if ( ! class_exists( 'BankMellat\Bank_Mellat_Help' ) ) {
@@ -198,7 +196,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 	 */
 	public function plugin_action_links( $links, string $plugin_file ) {
 		if ( basename( plugin_dir_path( $this->plugin_file ) ) . '/bank-mellat.php' === $plugin_file ) {
-			$links[] = sprintf( '<a href="%s">%s</a>', esc_url( admin_url( 'admin.php?page=WPBEGPAY-settings' ) ), __( 'Settings', 'bank-mellat' ) );
+			$links[] = sprintf( '<a href="%s">%s</a>', esc_url( admin_url( 'admin.php?page=bank-mellat-settings' ) ), 'تنظیمات' );
 		}
 		return $links;
 	}
@@ -210,17 +208,17 @@ final class Bank_Mellat extends \DediData\Singleton {
 	 */
 	public function update_db_check() {
 		// Add a database version to help with upgrades and run SQL install
-		if ( ! get_option( 'WPBEGPAY_db_version' ) ) {
-			update_option( 'WPBEGPAY_db_version', $this->plugin_version );
+		if ( ! get_option( 'bank_mellat_db_version' ) ) {
+			update_option( 'bank_mellat_db_version', $this->plugin_version );
 			$this->install_db();
 		}
 
 		// If database version doesn't match, update and run SQL install
-		if ( ! version_compare( get_option( 'WPBEGPAY_db_version' ), $this->plugin_version, '<' ) ) {
+		if ( ! version_compare( get_option( 'bank_mellat_db_version' ), $this->plugin_version, '<' ) ) {
 			return;
 		}
 
-		update_option( 'WPBEGPAY_db_version', $this->plugin_version );
+		update_option( 'bank_mellat_db_version', $this->plugin_version );
 		$this->install_db();
 	}
 
@@ -310,7 +308,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 		$wpdb = $GLOBALS['wpdb'];
 
-		$orders_table_name = $wpdb->prefix . 'WPBEGPAY_orders';
+		$orders_table_name = $wpdb->prefix . 'bank_mellat_orders';
 
 		// Explicitly set the character set and collation when creating the tables
 		$charset = defined( 'DB_CHARSET' ) && '' !== \DB_CHARSET ? \DB_CHARSET : 'utf8';
@@ -349,8 +347,8 @@ final class Bank_Mellat extends \DediData\Singleton {
 		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 		$wpdb = $GLOBALS['wpdb'];
 		
-		$table_name     = $wpdb->prefix . 'WPBEGPAY_orders';
-		$old_table_name = $wpdb->prefix . 'M_B_P_Orders';
+		$table_name     = $wpdb->prefix . 'bank_mellat_orders';
+		$old_table_name = $wpdb->prefix . 'WPBEGPAY_orders';
 		$table_exists   = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table_name ) );
 		if ( $table_exists !== $old_table_name ) {
 			return;
@@ -407,7 +405,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 		$wpdb = $GLOBALS['wpdb'];
 			
-		$table_name = $wpdb->prefix . 'WPBEGPAY_orders';
+		$table_name = $wpdb->prefix . 'bank_mellat_orders';
 		$get_order  = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %s ORDER BY order_id', $table_name ) );
 	
 		if ( ! $get_order ) {

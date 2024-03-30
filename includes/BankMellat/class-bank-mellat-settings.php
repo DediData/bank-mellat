@@ -28,7 +28,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 	 * @return void
 	 */
 	public function admin_menu() {
-		add_submenu_page( 'bank-mellat', 'تنظیمات', 'تنظیمات', 'manage_options', 'WPBEGPAY-settings', array( $this, 'settings' ) );
+		add_submenu_page( 'bank-mellat', 'تنظیمات', 'تنظیمات', 'manage_options', 'bank-mellat-settings', array( $this, 'settings' ) );
 	}
 
 	/**
@@ -47,9 +47,9 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 			<form method="post" action="options.php">
 			<?php
 				// Output the settings sections.
-				do_settings_sections( 'WPBEGPAY_settings' );
+				do_settings_sections( 'bank_mellat_settings' );
 				// Output the hidden fields, nonce, etc.
-				settings_fields( 'WPBEGPAY_settings_group' );
+				settings_fields( 'bank_mellat_settings_group' );
 				// Default setting's value
 				$default_settings = array(
 					'MellatG'                => '',
@@ -84,7 +84,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 				);
 				
 				// retrieve setting array from option's.
-				$settings = get_option( 'WPBEGPAY_settings_fields_arrays', $default_settings );
+				$settings = get_option( 'bank_mellat_settings_fields_arrays', $default_settings );
 	
 				// print settings array.
 				// print_r ( $settings_gateway );
@@ -145,39 +145,39 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 									<tr valign="top">
 										<th scope="row"><label for="MellatG_TerminalNumber">شماره ترمینال درگاه </label></th>
 										<td>
-											<input id="MellatG_TerminalNumber" name="WPBEGPAY_settings_fields_arrays[MellatG_TerminalNumber]" type="text" value="<?php esc_attr( $settings['MellatG_TerminalNumber'] ); ?>" />
+											<input id="MellatG_TerminalNumber" name="bank_mellat_settings_fields_arrays[MellatG_TerminalNumber]" type="text" value="<?php esc_attr( $settings['MellatG_TerminalNumber'] ); ?>" />
 										</td>
 									</tr>
 									<tr valign="top">
 										<th scope="row"><label for="MellatG_TerminalUser">نام کاربر ترمینال</label></th>
-										<td><input id="MellatG_TerminalUser" name="WPBEGPAY_settings_fields_arrays[MellatG_TerminalUser]" type="text" value="<?php esc_attr( $settings['MellatG_TerminalUser'] ); ?>" /></td>
+										<td><input id="MellatG_TerminalUser" name="bank_mellat_settings_fields_arrays[MellatG_TerminalUser]" type="text" value="<?php esc_attr( $settings['MellatG_TerminalUser'] ); ?>" /></td>
 									</tr>
 									<tr valign="top">
 										<th scope="row"><label for="MellatG_TerminalPass">کلمه عبور ترمینال</label></th>
-										<td><input id="MellatG_TerminalPass" name="WPBEGPAY_settings_fields_arrays[MellatG_TerminalPass]" type="text" value="<?php esc_attr( $settings['MellatG_TerminalPass'] ); ?>" /></td>
+										<td><input id="MellatG_TerminalPass" name="bank_mellat_settings_fields_arrays[MellatG_TerminalPass]" type="text" value="<?php esc_attr( $settings['MellatG_TerminalPass'] ); ?>" /></td>
 									</tr>
 								</table>
 							</section>
 							<table class="form-table" style="width:650px;">
 								<tr valign="top">
 									<th scope="row"><label for="connecting_msg">متن انتظار برای اتصال به بانک</label></th>
-									<td><input id="connecting_msg" name="WPBEGPAY_settings_fields_arrays[connecting_msg]" type="text" value="<?php esc_attr( $settings['connecting_msg'] ); ?>" /></td>
+									<td><input id="connecting_msg" name="bank_mellat_settings_fields_arrays[connecting_msg]" type="text" value="<?php esc_attr( $settings['connecting_msg'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="cancel_msg">متن انصراف از پرداخت</label></th>
-									<td><input id="cancel_msg" name="WPBEGPAY_settings_fields_arrays[cancel_msg]" type="text" value="<?php esc_attr( $settings['cancel_msg'] ); ?>" /></td>
+									<td><input id="cancel_msg" name="bank_mellat_settings_fields_arrays[cancel_msg]" type="text" value="<?php esc_attr( $settings['cancel_msg'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="error_msg">متن وقوع خطا در پرداخت</label></th>
-									<td><input id="error_msg" name="WPBEGPAY_settings_fields_arrays[error_msg]" type="text" value="<?php esc_attr( $settings['error_msg'] ); ?>" /></td>
+									<td><input id="error_msg" name="bank_mellat_settings_fields_arrays[error_msg]" type="text" value="<?php esc_attr( $settings['error_msg'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="invalid_msg">پیغام برای پرداخت های غیر معتبر</label></th>
-									<td><input id="invalid_msg" name="WPBEGPAY_settings_fields_arrays[invalid_msg]" type="text" value="<?php esc_attr( $settings['invalid_msg'] ); ?>" /></td>
+									<td><input id="invalid_msg" name="bank_mellat_settings_fields_arrays[invalid_msg]" type="text" value="<?php esc_attr( $settings['invalid_msg'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="successful_msg">پیغام برای پرداخت های موفق</label></th>
-									<td><input id="successful_msg" name="WPBEGPAY_settings_fields_arrays[successful_msg]" type="text" value="<?php esc_attr( $settings['successful_msg'] ); ?>" /></td>
+									<td><input id="successful_msg" name="bank_mellat_settings_fields_arrays[successful_msg]" type="text" value="<?php esc_attr( $settings['successful_msg'] ); ?>" /></td>
 								</tr>
 							</table>
 						</div>
@@ -185,45 +185,45 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 							<table class="form-table">
 								<tr valign="top">
 									<th scope="row"><label for="email_sender">آدرس ایمیل ارسال کننده</label></th>
-									<td><input id="email_sender" name="WPBEGPAY_settings_fields_arrays[email_sender]" type="text" value="<?php esc_attr( $settings['email_sender'] ); ?>" /></td>
+									<td><input id="email_sender" name="bank_mellat_settings_fields_arrays[email_sender]" type="text" value="<?php esc_attr( $settings['email_sender'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="email_subject">موضوع ایمیل</label></th>
-									<td><input id="email_subject" name="WPBEGPAY_settings_fields_arrays[email_subject]" type="text" value="<?php esc_attr( $settings['email_subject'] ); ?>" /></td>
+									<td><input id="email_subject" name="bank_mellat_settings_fields_arrays[email_subject]" type="text" value="<?php esc_attr( $settings['email_subject'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="email_logoUrl">آدرس لوگو</label></th>
-									<td><input id="email_logoUrl" name="WPBEGPAY_settings_fields_arrays[email_logoUrl]" type="text" value="<?php esc_attr( $settings['email_logoUrl'] ); ?>" /></td>
+									<td><input id="email_logoUrl" name="bank_mellat_settings_fields_arrays[email_logoUrl]" type="text" value="<?php esc_attr( $settings['email_logoUrl'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="email_headerText">سربرگ ایمیل</label></th>
-									<td><input id="email_headerText" name="WPBEGPAY_settings_fields_arrays[email_headerText]" type="text" value="<?php esc_attr( $settings['email_headerText'] ); ?>" /></td>
+									<td><input id="email_headerText" name="bank_mellat_settings_fields_arrays[email_headerText]" type="text" value="<?php esc_attr( $settings['email_headerText'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="email_Text">متن ایمیل</label></th>
-									<td><input id="email_Text" name="WPBEGPAY_settings_fields_arrays[email_Text]" type="text" value="<?php esc_attr( $settings['email_Text'] ); ?>" /></td>
+									<td><input id="email_Text" name="bank_mellat_settings_fields_arrays[email_Text]" type="text" value="<?php esc_attr( $settings['email_Text'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="email_footerText">پاورقی ایمیل</label></th>
-									<td><input id="email_footerText" name="WPBEGPAY_settings_fields_arrays[email_footerText]" type="text" value="<?php esc_attr( $settings['email_footerText'] ); ?>" /></td>
+									<td><input id="email_footerText" name="bank_mellat_settings_fields_arrays[email_footerText]" type="text" value="<?php esc_attr( $settings['email_footerText'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="email_textLink1">نام پیوند 1</label></th>
-									<td><input id="email_textLink1" name="WPBEGPAY_settings_fields_arrays[email_textLink1]" type="text" value="<?php esc_attr( $settings['email_textLink1'] ); ?>" /></td>
+									<td><input id="email_textLink1" name="bank_mellat_settings_fields_arrays[email_textLink1]" type="text" value="<?php esc_attr( $settings['email_textLink1'] ); ?>" /></td>
 									<th scope="row"><label for="email_link1">آدرس پیوند 1</label></th>
-									<td><input id="email_link1" name="WPBEGPAY_settings_fields_arrays[email_link1]" type="text" value="<?php esc_attr( $settings['email_link1'] ); ?>" /></td>
+									<td><input id="email_link1" name="bank_mellat_settings_fields_arrays[email_link1]" type="text" value="<?php esc_attr( $settings['email_link1'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="email_textLink2">نام پیوند 2</label></th>
-									<td><input id="email_textLink2" name="WPBEGPAY_settings_fields_arrays[email_textLink2]" type="text" value="<?php esc_attr( $settings['email_textLink2'] ); ?>" /></td>
+									<td><input id="email_textLink2" name="bank_mellat_settings_fields_arrays[email_textLink2]" type="text" value="<?php esc_attr( $settings['email_textLink2'] ); ?>" /></td>
 									<th scope="row"><label for="email_link2">آدرس پیوند 2</label></th>
-									<td><input id="email_link2" name="WPBEGPAY_settings_fields_arrays[email_link2]" type="text" value="<?php esc_attr( $settings['email_link2'] ); ?>" /></td>
+									<td><input id="email_link2" name="bank_mellat_settings_fields_arrays[email_link2]" type="text" value="<?php esc_attr( $settings['email_link2'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="email_textLink3">نام پیوند 3</label></th>
-									<td><input id="email_textLink3" name="WPBEGPAY_settings_fields_arrays[email_textLink3]" type="text" value="<?php esc_attr( $settings['email_textLink3'] ); ?>" /></td>
+									<td><input id="email_textLink3" name="bank_mellat_settings_fields_arrays[email_textLink3]" type="text" value="<?php esc_attr( $settings['email_textLink3'] ); ?>" /></td>
 									<th scope="row"><label for="email_link3">آدرس پیوند 3</label></th>
-									<td><input id="email_link3" name="WPBEGPAY_settings_fields_arrays[email_link3]" type="text" value="<?php esc_attr( $settings['email_link3'] ); ?>" /></td>
+									<td><input id="email_link3" name="bank_mellat_settings_fields_arrays[email_link3]" type="text" value="<?php esc_attr( $settings['email_link3'] ); ?>" /></td>
 								</tr>
 							</table>
 						</div>
@@ -232,7 +232,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 								<tr valign="top">
 									<th scope="row">ارسال پیامک در زمان اتمام پرداخت</th>
 									<td>
-										<select name="WPBEGPAY_settings_fields_arrays[sendSms]">
+										<select name="bank_mellat_settings_fields_arrays[sendSms]">
 											<option value="true" <?php echo 'true' === $settings['sendSms'] ? 'selected' : ''; ?>>بله</option>
 											<option value="false" <?php echo 'false' === $settings['sendSms'] ? 'selected' : ''; ?>>خیر</option>
 										</select>
@@ -241,7 +241,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 								<tr valign="top">
 									<th scope="row">سرویس دهنده پیامک</th>
 									<td>
-										<select dir="rtl"  name="WPBEGPAY_settings_fields_arrays[sms_service]">
+										<select dir="rtl"  name="bank_mellat_settings_fields_arrays[sms_service]">
 											<option value="sabapyamak" <?php echo 'sabapyamak' === $settings['sms_service'] ? 'selected' : ''; ?>>صبا پیامک</option>
 											<option value="iransmspanel" <?php echo 'iransmspanel' === $settings['sms_service'] ? 'selected' : ''; ?>>ایران اس ام اس پنل</option>
 											<option value="relax" <?php echo 'relax' === $settings['sms_service'] ? 'selected' : ''; ?>>ریلکس</option>
@@ -283,23 +283,23 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="adminMobile">شماره موبایل مدیر وبسایت</label></th>
-									<td><input id="adminMobile" name="WPBEGPAY_settings_fields_arrays[adminMobile]" type="text" value="<?php esc_attr( $settings['adminMobile'] ); ?>" /></td>
+									<td><input id="adminMobile" name="bank_mellat_settings_fields_arrays[adminMobile]" type="text" value="<?php esc_attr( $settings['adminMobile'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="Sms_username">نام کاربری پنل پیامک</label></th>
-									<td><input id="Sms_username" name="WPBEGPAY_settings_fields_arrays[Sms_username]" type="text" value="<?php esc_attr( $settings['Sms_username'] ); ?>" /></td>
+									<td><input id="Sms_username" name="bank_mellat_settings_fields_arrays[Sms_username]" type="text" value="<?php esc_attr( $settings['Sms_username'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="Sms_password">کلمه عبور پنل پیامک</label></th>
-									<td><input id="Sms_password" name="WPBEGPAY_settings_fields_arrays[Sms_password]" type="text" value="<?php esc_attr( $settings['Sms_password'] ); ?>" /></td>
+									<td><input id="Sms_password" name="bank_mellat_settings_fields_arrays[Sms_password]" type="text" value="<?php esc_attr( $settings['Sms_password'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="sms_lineNumber">شماره خط اختصاصی</label></th>
-									<td><input id="sms_lineNumber" name="WPBEGPAY_settings_fields_arrays[sms_lineNumber]" type="text" value="<?php esc_attr( $settings['sms_lineNumber'] ); ?>" /></td>
+									<td><input id="sms_lineNumber" name="bank_mellat_settings_fields_arrays[sms_lineNumber]" type="text" value="<?php esc_attr( $settings['sms_lineNumber'] ); ?>" /></td>
 								</tr>
 								<tr valign="top">
 									<th scope="row"><label for="Sms_text">متن پیامک ارسالی</label></th>
-									<td><input id="Sms_text" name="WPBEGPAY_settings_fields_arrays[Sms_text]" type="text" value="<?php esc_attr( $settings['Sms_text'] ); ?>" /></td>
+									<td><input id="Sms_text" name="bank_mellat_settings_fields_arrays[Sms_text]" type="text" value="<?php esc_attr( $settings['Sms_text'] ); ?>" /></td>
 								</tr>
 							</table>
 						</div>
@@ -318,11 +318,11 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 											$settings_form_theme = 'checked="checked"';
 										}
 										?>
-										<input type="radio" name="WPBEGPAY_settings_fields_arrays[form]" value="<?php echo esc_attr( $theme ); ?>" <?php echo esc_html( $settings_form_theme ); ?> />فرم <?php echo esc_html( $theme ); ?><br />
+										<input type="radio" name="bank_mellat_settings_fields_arrays[form]" value="<?php echo esc_attr( $theme ); ?>" <?php echo esc_html( $settings_form_theme ); ?> />فرم <?php echo esc_html( $theme ); ?><br />
 										<?php
 									}
-									if ( is_dir( \WP_CONTENT_DIR . '/WPBEGPAY' ) ) {
-										$users_themes = scandir( \WP_CONTENT_DIR . '/WPBEGPAY' );
+									if ( is_dir( \WP_CONTENT_DIR . '/bank-mellat' ) ) {
+										$users_themes = scandir( \WP_CONTENT_DIR . '/bank-mellat' );
 										foreach ( $users_themes as $theme ) {
 											if ( ! preg_match( '/.html/', $theme ) ) {
 												continue;
@@ -331,7 +331,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 												$settings_form_theme = 'checked="checked"';
 											}
 											?>
-											<input type="radio" name="WPBEGPAY_settings_fields_arrays[form]" value="<?php echo esc_attr( $theme ); ?>" <?php echo esc_html( $settings_form_theme ); ?> />فرم <?php echo esc_html( $theme ); ?><br />
+											<input type="radio" name="bank_mellat_settings_fields_arrays[form]" value="<?php echo esc_attr( $theme ); ?>" <?php echo esc_html( $settings_form_theme ); ?> />فرم <?php echo esc_html( $theme ); ?><br />
 											<?php
 										}
 									}
@@ -357,23 +357,23 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
  
 		// setting section
 		add_settings_section(
-			'WPBEGPAY_settings_section',
+			'bank_mellat_settings_section',
 			null,
 			array( $this, 'settings_section_callback' ),
-			'WPBEGPAY_settings'
+			'bank_mellat_settings'
 		);
 		 
 		// setting field
 		add_settings_field(
-			'WPBEGPAY_settings_field_array',
+			'bank_mellat_settings_field_array',
 			null,
 			array( $this, 'settings_array' ),
-			'WPBEGPAY_settings',
-			'WPBEGPAY_settings_section'
+			'bank_mellat_settings',
+			'bank_mellat_settings_section'
 		);
 	 
 		// Register this field with our settings group.
-		register_setting( 'WPBEGPAY_settings_group', 'WPBEGPAY_settings_fields_arrays' );
+		register_setting( 'bank_mellat_settings_group', 'bank_mellat_settings_fields_arrays' );
 	}
 
 	/**
