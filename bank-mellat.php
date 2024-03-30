@@ -29,10 +29,11 @@ new \DediData\Plugin_Autoloader( array( 'DediData', 'BankMellat' ) );
 /**
  * The function BANK_MELLAT returns an instance of the Bank_Mellat class.
  *
- * @return object an instance of the \BankMellat\Bank_Mellat class.
+ * @return object an instance of the \BankMellat\Bank_Mellat_Init class.
  * @SuppressWarnings(PHPMD.StaticAccess)
  */
 function BANK_MELLAT() { // phpcs:ignore Squiz.Functions.GlobalFunction.Found, WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
-	return \BankMellat\Bank_Mellat::get_instance( __FILE__ );
+	return \BankMellat\Bank_Mellat_Init::get_instance( __FILE__ );
 }
 BANK_MELLAT();
+\BankMellat\Bank_Mellat::get_instance();

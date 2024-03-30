@@ -57,7 +57,7 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 	 * @return void
 	 */
 	public function admin_menu() {
-		add_menu_page( 'دروازه پرداخت بانک ملت', 'درگاه بانک ملت', 'manage_options', 'bank-mellat', array( $this, 'orders' ), $this->plugin_url . 'assets/images/bank-mellat.png' );
+		add_menu_page( 'دروازه پرداخت بانک ملت', 'درگاه بانک ملت', 'manage_options', 'bank-mellat', array( $this, 'orders' ), $this->plugin_url . '/assets/images/bank-mellat.png' );
 		add_submenu_page( 'bank-mellat', 'گزارش‌ها', 'پرداخت‌ها', 'manage_options', 'bank-mellat', array( $this, 'orders' ) );
 	}
 	
@@ -250,6 +250,8 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 				// nothing for default
 				break;
 		}
-		echo number_format( $query );
+		if ( null !== $query){
+			echo number_format( $query );
+		}
 	}
 }

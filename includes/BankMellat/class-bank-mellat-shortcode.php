@@ -63,17 +63,17 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 			.bank-mellat-warning {
 				color: #9F6000;
 				background-color: #FEEFB3;
-				background-image: url('" . esc_url( $this->plugin_url . 'assets/images/warning.png' ) . "');
+				background-image: url('" . esc_url( $this->plugin_url . '/assets/images/warning.png' ) . "');
 			}
 			.bank-mellat-success {
 				color: #4F8A10;
 				background-color: #DFF2BF;
-				background-image: url('" . esc_url( $this->plugin_url . 'assets/images/success.png' ) . "');
+				background-image: url('" . esc_url( $this->plugin_url . '/assets/images/success.png' ) . "');
 			}
 			.bank-mellat-connecting {
 				color: #4F8A10;
 				background-color: #DFF2BF;
-				background-image: url('" . esc_url( $this->plugin_url . 'assets/images/loader.gif' ) . "');
+				background-image: url('" . esc_url( $this->plugin_url . '/assets/images/loader.gif' ) . "');
 			}
 			</style>
 		";

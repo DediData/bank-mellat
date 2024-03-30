@@ -12,7 +12,7 @@ namespace BankMellat;
 /**
  * Class Bank_Mellat_Orders_List
  */
-final class Bank_Mellat_Orders_List extends WP_List_Table {
+final class Bank_Mellat_Orders_List extends \WP_List_Table {
 
 	/**
 	 * Constructor
@@ -20,10 +20,14 @@ final class Bank_Mellat_Orders_List extends WP_List_Table {
 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	public function __construct() {
-		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
-		$status = $GLOBALS['status'];
-		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
-		$page            = $GLOBALS['page'];
+		if ( isset( $GLOBALS['status'] ) ) {
+			// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+			$status = $GLOBALS['status'];
+		}
+		if ( isset( $GLOBALS['page'] ) ) {
+			// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+			$page            = $GLOBALS['page'];
+		}
 		$construct_array = array(
 			'singular' => 'person',
 			'plural'   => 'persons',
