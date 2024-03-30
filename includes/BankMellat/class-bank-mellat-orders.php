@@ -41,8 +41,8 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	public function __construct() {
-		$this->plugin_url    = BANK_MELLAT()->plugin_url;
-		$this->plugin_folder = BANK_MELLAT()->plugin_folder;
+		$this->plugin_url    = BANK_MELLAT()->get( 'plugin_url' );
+		$this->plugin_folder = BANK_MELLAT()->get( 'plugin_folder' );
 		// WordPress database
 		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 		$wpdb = $GLOBALS['wpdb'];

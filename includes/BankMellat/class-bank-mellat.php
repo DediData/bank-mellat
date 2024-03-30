@@ -228,8 +228,8 @@ final class Bank_Mellat extends \DediData\Singleton {
 	 * @return void
 	 */
 	public function plugin_references() {
-		wp_enqueue_style( 'bank-mellat-orders-css', BANK_MELLAT()->plugin_url . '/assets/css/style.css', array(), BANK_MELLAT()->plugin_version );
-		wp_enqueue_script( 'bank-mellat-help-js', BANK_MELLAT()->plugin_url . '/assets/js/jquery.accordion.js', 'jquery', BANK_MELLAT()->plugin_version, true );
+		wp_enqueue_style( 'bank-mellat-orders-css', $this->plugin_url . '/assets/css/style.css', array(), BANK_MELLAT()->plugin_version );
+		wp_enqueue_script( 'bank-mellat-help-js', $this->plugin_url . '/assets/js/jquery.accordion.js', 'jquery', BANK_MELLAT()->plugin_version, true );
 	}
 	
 	/**

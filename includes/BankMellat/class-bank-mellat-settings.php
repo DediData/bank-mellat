@@ -15,9 +15,17 @@ namespace BankMellat;
 final class Bank_Mellat_Settings extends \DediData\Singleton {
 
 	/**
+	 * Plugin Folder
+	 * 
+	 * @var string $plugin_folder
+	 */
+	protected $plugin_folder;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->plugin_folder = BANK_MELLAT()->get( 'plugin_folder' );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'settings_init' ) );
 	}
@@ -309,7 +317,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 									<th scope="row">فرم پرداخت</th>
 									<td>
 									<?php 
-									$defualt_themes = scandir( BANK_MELLAT()->plugin_folder . 'includes/forms' );
+									$defualt_themes = scandir( $this->plugin_folder . 'includes/forms' );
 									foreach ( $defualt_themes as $theme ) {
 										if ( ! preg_match( '/.php/', $theme ) ) {
 											continue;

@@ -32,8 +32,8 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->plugin_url    = BANK_MELLAT()->plugin_url;
-		$this->plugin_folder = BANK_MELLAT()->plugin_folder;
+		$this->plugin_url    = BANK_MELLAT()->get( 'plugin_url' );
+		$this->plugin_folder = BANK_MELLAT()->get( 'plugin_folder' );
 		add_shortcode( 'BANK_MELLAT', array( $this, 'shortcode' ) );
 		add_shortcode( 'WPBEGPAY_SC', array( $this, 'shortcode' ) );
 	}
@@ -380,7 +380,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	private function order_mail( $order, $settings ) {
-		$img_url = BANK_MELLAT()->plugin_url . '/assets/images/mail/';
+		$img_url = $this->plugin_url . '/assets/images/mail/';
 
 		$fields = '
 			<p>شماره سفارش: ' . $order->order_id . '</p>
