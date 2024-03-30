@@ -107,7 +107,9 @@ final class Bank_Mellat extends \DediData\Singleton {
 		}
 
 		// Load settings's class
-		new BankMellat\Bank_Mellat_Settings();
+		if ( ! class_exists( 'BankMellat\Bank_Mellat_Settings' ) ) {
+			new BankMellat\Bank_Mellat_Settings();
+		}
 		
 		// Load help's class
 		if ( ! class_exists( 'BankMellat\Bank_Mellat_Help' ) ) {
@@ -565,8 +567,6 @@ final class Bank_Mellat extends \DediData\Singleton {
 					}
 					input[type="checkbox"],
 					input[type="radio"]{
-						-webkit-box-sizing:border-box;
-						-moz-box-sizing:border-box;
 						box-sizing:border-box;
 						padding:0;
 					}
@@ -575,9 +575,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 						height:auto;
 					}
 					input[type="search"]{
-						-webkit-appearance:textfield;
-						-moz-box-sizing:content-box;
-						-webkit-box-sizing:content-box;
+						appearance:textfield;
 						box-sizing:content-box;
 					}
 					input[type="search"]::-webkit-search-cancel-button,
@@ -606,7 +604,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 					td,th{
 						padding:0;
 					}
-					.responstable{
+					.response-table{
 						margin:1em 0;
 						width:100%;
 						overflow:hidden;
@@ -615,62 +613,62 @@ final class Bank_Mellat extends \DediData\Singleton {
 						border-radius:10px;
 						border:1px solid #167F92;
 					}
-					.responstable tr{
+					.response-table tr{
 						border:1px solid #D9E4E6;
 					}
-					.responstable tr:nth-child(odd){
+					.response-table tr:nth-child(odd){
 						background-color:#EAF3F3;
 					}
-					.responstable th{
+					.response-table th{
 						display:none;
 						border:1px solid #FFF;
 						background-color:#167F92;
 						color:#FFF;
 						padding:1em;
 					}
-					.responstable th:first-child{
+					.response-table th:first-child{
 						display:table-cell;
 						text-align:center;
 					}
-					.responstable th:nth-child(2){
+					.response-table th:nth-child(2){
 						display:table-cell;
 					}
-					.responstable th:nth-child(2) span{
+					.response-table th:nth-child(2) span{
 						display:none;
 					}
-					.responstable th:nth-child(2):after{
+					.response-table th:nth-child(2):after{
 						content:attr(data-th);
 					}
 					@media (min-width: 480px){
-						.responstable th:nth-child(2) span{
+						.response-table th:nth-child(2) span{
 							display:block;
 						}
-						.responstable th:nth-child(2):after{
+						.response-table th:nth-child(2):after{
 							display:none;
 						}
 					}
-					.responstable td{
+					.response-table td{
 						display:block;
 						word-wrap:break-word;
 						max-width:7em;
 					}
-					.responstable td:first-child{
+					.response-table td:first-child{
 						display:table-cell;
 						text-align:center;
 						border-right:1px solid #D9E4E6;
 					}
 					@media (min-width: 480px){
-						.responstable td{
+						.response-table td{
 							border:1px solid #D9E4E6;
 						}
 					}
-					.responstable th,.responstable td{
+					.response-table th,.response-table td{
 						text-align:right;
 						margin:.5em 1em;
 					}
 					@media (min-width: 480px){
-						.responstable th,
-						.responstable td{
+						.response-table th,
+						.response-table td{
 							display:table-cell;
 							padding:1em;
 						}
@@ -699,7 +697,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 			</head>
 			<body>
 				<h1>گزارشات تراکنش های انجام شده</span></h1>
-				<table class="responstable">
+				<table class="response-table">
 					<tr>
 						<th>#</th>
 						<th>نام و نام خانوادگي</th>
