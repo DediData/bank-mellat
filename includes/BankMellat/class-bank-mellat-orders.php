@@ -250,7 +250,7 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 				// nothing for default
 				break;
 		}
-		if ( null !== $query){
+		if ( null !== $query ) {
 			echo number_format( $query );
 		}
 	}
