@@ -81,6 +81,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 		add_action( 'plugins_loaded', array( $this, 'update_db_check' ) );
 		
 		add_action( 'admin_enqueue_scripts', array( $this, 'plugin_references' ) );
+		
 	}
 
 	/**
