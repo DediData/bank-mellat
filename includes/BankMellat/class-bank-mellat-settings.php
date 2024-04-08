@@ -322,6 +322,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 										if ( ! preg_match( '/.php/', $theme ) ) {
 											continue;
 										}
+										$settings_form_theme = '';
 										if ( $settings['form'] === $theme ) {
 											$settings_form_theme = 'checked="checked"';
 										}
@@ -335,6 +336,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 											if ( ! preg_match( '/.html/', $theme ) ) {
 												continue;
 											}
+											$settings_form_theme = '';
 											if ( $settings['form'] === $theme ) {
 												$settings_form_theme = 'checked="checked"';
 											}
