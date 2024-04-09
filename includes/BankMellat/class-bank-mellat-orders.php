@@ -127,7 +127,7 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 					}
 					if ( null !== $get_order_id ) {
 						?>
-						<div style="display: block;" id="order-<?php esc_attr( $get_order_id ); ?>" class="postbox">
+						<div style="display: block;" id="order-<?php echo esc_attr( $get_order_id ); ?>" class="postbox">
 							<h2 class="handle ui-sortable-handle"><span><?php /* Translators: replace %s with order id */  printf( esc_html__( 'Transaction details %s', 'bank-mellat' ), esc_html( $get_order_id ) ); ?></span></h2>
 							<div class="inside">
 							<?php
