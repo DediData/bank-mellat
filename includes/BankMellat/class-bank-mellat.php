@@ -197,7 +197,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 			return;
 		}
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$old_order = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `%s`', $old_table_name ) );
+		$old_order = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i', $old_table_name ) );
 
 		if ( ! count( $old_order ) > 0 ) {
 			return;
@@ -231,7 +231,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 			);
 		}
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$wpdb->query( $wpdb->prepare( 'DELETE FROM `%s` where 1', $old_table_name ) );
+		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i where 1', $old_table_name ) );
 	}
 
 	/**
@@ -249,7 +249,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 		$wpdb = $GLOBALS['wpdb'];
 			
 		$table_name = $wpdb->prefix . 'bank_mellat_orders';
-		$get_order  = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `%s` ORDER BY order_id', $table_name ) );
+		$get_order  = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY order_id', $table_name ) );
 	
 		if ( ! $get_order ) {
 			return;

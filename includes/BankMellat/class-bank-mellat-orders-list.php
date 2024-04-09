@@ -20,13 +20,15 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	public function __construct() {
+		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 		if ( isset( $GLOBALS['status'] ) ) {
 			// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 			$status = $GLOBALS['status'];
 		}
+		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
 		if ( isset( $GLOBALS['page'] ) ) {
 			// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
-			$page            = $GLOBALS['page'];
+			$page = $GLOBALS['page'];
 		}
 		$construct_array = array(
 			'singular' => 'person',
@@ -56,11 +58,11 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 	 */
 	public function column_order_name_surname( $item ) {
 		// phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
-		$wpdb      = $GLOBALS['wpdb'];
-		$order_id  = $item['order_id'];
-		$tablename = $wpdb->prefix . 'bank_mellat_orders';
+		$wpdb       = $GLOBALS['wpdb'];
+		$order_id   = $item['order_id'];
+		$table_name = $wpdb->prefix . 'bank_mellat_orders';
 
-		$get_order = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `%s` WHERE order_id = %d', $tablename, $order_id ) );
+		$get_order = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE order_id = %d', $table_name, $order_id ) );
 		if ( $get_order ) {
 			$actions = array(
 				'view'   => sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=bank-mellat&orderId=' . $item['order_id'], 'admin' ), 'نمایش جزئیات' ),
@@ -180,7 +182,7 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 		if ( null === $ids ) {
 			return;
 		}
-		$wpdb->query( $wpdb->prepare( 'DELETE FROM `%s` WHERE order_id = %d', $table_name, $ids ) );
+		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE order_id = %d', $table_name, $ids ) );
 	}
 
 	/**
@@ -212,7 +214,7 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 		$this->process_bulk_action();
 
 		// Will be used in pagination settings
-		$total_items = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(order_id) FROM `%s`', $table_name ) );
+		$total_items = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(order_id) FROM %i', $table_name ) );
 
 		// prepare query params, as usual current page, order by and order direction
 		$get_paged   = filter_input( \INPUT_GET, 'paged', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
@@ -220,11 +222,12 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 		$get_order   = filter_input( \INPUT_GET, 'order', \FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		$paged       = null !== $get_paged ? max( 0, intval( $get_paged ) - 1 ) : 0;
 		$orderby     = null !== $get_orderby && in_array( $get_orderby, array_keys( $this->get_sortable_columns() ), true ) ? $get_orderby : 'order_id';
-		$order       = null !== $get_order && in_array( $get_order, array( 'asc', 'desc' ), true ) ? $get_orderby : 'desc';
+		$order       = null !== $get_order && in_array( $get_order, array( 'asc', 'desc' ), true ) ? $get_order : 'desc';
 
 		// [REQUIRED] define $items array
 		// notice that last argument is ARRAY_A, so we will retrieve array
-		$this->items = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `%s` ORDER BY %s %s LIMIT %d OFFSET %d', $table_name, $orderby, $order, $per_page, $paged ), \ARRAY_A );
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i ORDER BY %i {$order} LIMIT %d OFFSET %d", $table_name, $orderby, $per_page, $paged ), \ARRAY_A );
 
 		// [REQUIRED] configure pagination
 		$this->set_pagination_args(

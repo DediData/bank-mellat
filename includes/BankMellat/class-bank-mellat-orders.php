@@ -138,7 +138,7 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 							$get_order  = wp_cache_get( $cache_key, 'bank_mellat_orders' );
 							// If the data is not cached, fetch it from the database and cache it
 							if ( false === $get_order ) {
-								$get_order = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `%s` WHERE order_id = %d', $table_name, $get_order_id ) );
+								$get_order = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE order_id = %d', $table_name, $get_order_id ) );
 								// Cache the result for future use
 								wp_cache_set( $cache_key, $get_order, 'bank_mellat_orders' );
 							}
@@ -238,20 +238,21 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 		$orders_table = $this->orders_table_name;
 		switch ( $arg ) {
 			case 'successful_pay_money':
-				$query = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(order_amount) AS priceCount FROM `%s` WHERE order_status = 'yes'", $orders_table ) );
+				$query = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(order_amount) AS priceCount FROM %i WHERE order_status = 'yes'", $orders_table ) );
 				break;
 			case 'successful_pay':
-				$query = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `%s` WHERE order_status = 'yes'", $orders_table ) );
+				$query = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE order_status = 'yes'", $orders_table ) );
 				break;
 			case 'unsuccessful_pay':
-				$query = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %s WHERE order_status = 'no'", $orders_table ) );
+				$query = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE order_status = 'no'", $orders_table ) );
 				break;
 			default:
 				// nothing for default
 				break;
 		}
-		if ( null !== $query ) {
-			echo number_format( $query );
+		if ( null === $query ) {
+			return;
 		}
+		echo number_format( intval( $query ) );
 	}
 }

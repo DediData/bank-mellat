@@ -340,7 +340,7 @@ final class Bank_Mellat_Shortcode extends \DediData\Singleton {
 
 		$get_order = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT * FROM `%s` WHERE order_orderid = %d',
+				'SELECT * FROM %i WHERE order_orderid = %d',
 				$table_name,
 				$order_id
 			)
