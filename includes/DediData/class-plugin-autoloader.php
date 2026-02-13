@@ -5,8 +5,6 @@
  * @package DediData
  */
 
-declare(strict_types=1);
-
 namespace DediData;
 
 use Exception;
@@ -19,7 +17,7 @@ final class Plugin_Autoloader {
 
 	/**
 	 * Name Spaces
-	 * 
+	 *
 	 * @var array<string> $name_spaces
 	 */
 	protected $name_spaces;
@@ -33,29 +31,29 @@ final class Plugin_Autoloader {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param array<string> $name_spaces Name Spaces.
 	 * @return void
 	 */
 	public function __construct( array $name_spaces ) {
 		$this->name_spaces = $name_spaces;
-		// phpcs:ignore SlevomatCodingStandard.ControlStructures.NewWithoutParentheses.UselessParentheses
-		$trace = ( new Exception() )->getTrace();
+		$exception_ins     = new Exception();
+		$trace             = $exception_ins->getTrace();
 		if ( ! isset( $trace[0]['file'] ) ) {
 			new WP_Error( 'Invalid Trace for Autoload' );
 		}
-		$this->plugin_file = $trace[0]['file'];
+		$this->plugin_file = isset( $trace[0] ) && isset( $trace[0]['file'] ) ? $trace[0]['file'] : '';
 		spl_autoload_register( array( $this, 'autoloader' ) );
 	}
 
 	/**
 	 * The autoloader function checks if a class is part of a specific plugin and includes the
 	 * corresponding class file if it exists.
-	 * 
+	 *
 	 * @param string $class_name The class parameter is the name of the class that needs to be auto loaded.
-	 * @return void
+	 * @return void Return
 	 */
-	public function autoloader( string $class_name ) {
+	public function autoloader( string $class_name ): void {
 		$parts = explode( '\\', $class_name );
 		// Get class name from full class name
 		$class_part = end( $parts );

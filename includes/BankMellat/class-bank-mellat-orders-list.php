@@ -1,11 +1,9 @@
 <?php
 /**
  * Bank Mellat Orders List Class
- * 
+ *
  * @package Bank_Mellat
  */
-
-declare(strict_types=1);
 
 namespace BankMellat;
 
@@ -16,7 +14,7 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	public function __construct() {
@@ -40,7 +38,7 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 
 	/**
 	 * Column Default
-	 * 
+	 *
 	 * @param array<mixed> $item        Item.
 	 * @param mixed        $column_name Column Name.
 	 * @return mixed
@@ -51,7 +49,7 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 
 	/**
 	 * Column Order Name Surname
-	 * 
+	 *
 	 * @param array<mixed> $item Item.
 	 * @return mixed
 	 * @SuppressWarnings(PHPMD.Superglobals)
@@ -78,7 +76,7 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 
 	/**
 	 * Column Order Amount
-	 * 
+	 *
 	 * @param array<mixed> $item Item.
 	 * @return mixed
 	 */
@@ -88,7 +86,7 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 
 	/**
 	 * Column Order Status
-	 * 
+	 *
 	 * @param array<mixed> $item Item.
 	 * @return mixed
 	 */
@@ -98,7 +96,7 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 
 	/**
 	 * Column Order Settle
-	 * 
+	 *
 	 * @param array<mixed> $item Item.
 	 * @return mixed
 	 */
@@ -108,7 +106,7 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 
 	/**
 	 * Get Columns
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function get_columns() {
@@ -126,7 +124,7 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 
 	/**
 	 * Get Sortable Columns
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function get_sortable_columns() {
@@ -142,7 +140,7 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 
 	/**
 	 * Get Bulk Actions
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function get_bulk_actions() {
@@ -162,7 +160,7 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 
 	/**
 	 * Process Bulk Actions
-	 * 
+	 *
 	 * @return void
 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
@@ -187,7 +185,7 @@ final class Bank_Mellat_Orders_List extends \WP_List_Table {
 
 	/**
 	 * Prepare Items
-	 * 
+	 *
 	 * @return void
 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */

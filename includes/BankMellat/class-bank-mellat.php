@@ -5,8 +5,6 @@
  * @package Bank_Mellat
  */
 
-declare(strict_types=1);
-
 namespace BankMellat;
 
 use BankMellat;
@@ -18,21 +16,21 @@ final class Bank_Mellat extends \DediData\Singleton {
 	
 	/**
 	 * Plugin URL
-	 * 
+	 *
 	 * @var string $plugin_url
 	 */
 	protected $plugin_url;
 
 	/**
 	 * Plugin Version
-	 * 
+	 *
 	 * @var string $plugin_version
 	 */
 	protected $plugin_version;
 
 	/**
 	 * Plugin File
-	 * 
+	 *
 	 * @var string $plugin_file
 	 */
 	protected $plugin_file;
@@ -46,7 +44,7 @@ final class Bank_Mellat extends \DediData\Singleton {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	protected function __construct() {

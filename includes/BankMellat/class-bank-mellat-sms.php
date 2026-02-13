@@ -5,8 +5,6 @@
  * @package Bank_Mellat
  */
 
-declare(strict_types=1);
-
 namespace BankMellat;
 
 /**

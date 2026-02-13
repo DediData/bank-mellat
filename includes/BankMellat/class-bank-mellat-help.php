@@ -1,11 +1,9 @@
 <?php
 /**
  * Bank Mellat Help Main Class
- * 
+ *
  * @package Bank_Mellat
  */
-
-declare(strict_types=1);
 
 namespace BankMellat;
 
@@ -20,19 +18,19 @@ final class Bank_Mellat_Help extends \DediData\Singleton {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 	}
-	
+
 	/**
 	 * Admin Menu
-	 * 
+	 *
 	 * @return void
 	 */
 	public function admin_menu() {
 		add_submenu_page( 'bank-mellat', 'راهنما افزونه پرداخت آنلاین', 'راهنما', 'manage_options', 'bank-mellat-help', array( $this, 'help' ) );
 	}
-	
+
 	/**
 	 * Help
-	 * 
+	 *
 	 * @return void
 	 */
 	public function help() {

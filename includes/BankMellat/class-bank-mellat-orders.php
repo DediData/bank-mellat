@@ -1,11 +1,9 @@
 <?php
 /**
  * Bank Mellat Orders Main Class
- * 
+ *
  * @package Bank_Mellat
  */
-
-declare(strict_types=1);
 
 namespace BankMellat;
 
@@ -16,14 +14,14 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 
 	/**
 	 * Plugin URL
-	 * 
+	 *
 	 * @var string $plugin_url
 	 */
 	protected $plugin_url;
 
 	/**
 	 * Plugin Folder
-	 * 
+	 *
 	 * @var string $plugin_folder
 	 */
 	protected $plugin_folder;
@@ -37,7 +35,7 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	public function __construct() {
@@ -53,17 +51,17 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 
 	/**
 	 * Admin Menu
-	 * 
+	 *
 	 * @return void
 	 */
 	public function admin_menu() {
 		add_menu_page( 'دروازه پرداخت بانک ملت', 'درگاه بانک ملت', 'manage_options', 'bank-mellat', array( $this, 'orders' ), $this->plugin_url . '/assets/images/bank-mellat.png' );
 		add_submenu_page( 'bank-mellat', 'گزارش‌ها', 'پرداخت‌ها', 'manage_options', 'bank-mellat', array( $this, 'orders' ) );
 	}
-	
+
 	/**
 	 * Orders page
-	 * 
+	 *
 	 * @return void
 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
@@ -84,19 +82,19 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 			</h2>
 			<div class="stat-container">
 				<div class="stat-holder">
-					<div class="stat">							
+					<div class="stat">
 					<span id="total"><?php $this->orders_widget( 'successful_pay_money' ); ?></span>
 					مجموع پرداخت های موفق
 					</div>
 				</div>
 				<div class="stat-holder">
-					<div class="stat">							
+					<div class="stat">
 					<span id="total"><?php $this->orders_widget( 'successful_pay' ); ?></span>
 					پرداخت های موفق
 					</div>
 				</div>
 				<div class="stat-holder">
-					<div class="stat">							
+					<div class="stat">
 					<span id="total"><?php $this->orders_widget( 'unsuccessful_pay' ); ?></span>
 					پرداخت های ناموفق
 					</div>
@@ -150,7 +148,7 @@ final class Bank_Mellat_Orders extends \DediData\Singleton {
 										<style>
 										table, th, td {
 											border: 1px solid rgb(206, 199, 199);
-										} 
+										}
 										</style>
 										<table style="width: 100%; border: 1px solid rgb(206, 199, 199);" dir="rtl" border="1" cellpadding="10">
 											<tbody>

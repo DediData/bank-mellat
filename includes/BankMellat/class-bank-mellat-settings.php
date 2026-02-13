@@ -1,11 +1,9 @@
 <?php
 /**
  * Bank Mellat Settings Main Class
- * 
+ *
  * @package Bank_Mellat
  */
-
-declare(strict_types=1);
 
 namespace BankMellat;
 
@@ -16,7 +14,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 
 	/**
 	 * Plugin Folder
-	 * 
+	 *
 	 * @var string $plugin_folder
 	 */
 	protected $plugin_folder;
@@ -32,7 +30,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 
 	/**
 	 * Admin Menu
-	 * 
+	 *
 	 * @return void
 	 */
 	public function admin_menu() {
@@ -41,7 +39,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 
 	/**
 	 * Settings page
-	 * 
+	 *
 	 * @return void
 	 */
 	public function settings() {
@@ -90,10 +88,10 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 					'Sms_text'               => 'پرداخت # با مبلغ $ با موفقیت انجام شد.',
 					'form'                   => 'formA.php',
 				);
-				
+
 				// retrieve setting array from option's.
 				$settings = get_option( 'bank_mellat_settings_fields_arrays', $default_settings );
-	
+
 				// print settings array.
 				// print_r ( $settings_gateway );
 				?>
@@ -109,7 +107,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 						});
 					});
 				</script>
-			
+
 				<style>
 					.grid{
 						width: 960px;
@@ -138,7 +136,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 						display: none;
 					}
 				</style>
-			
+
 				<div id="tabs-container">
 					<h2 class="nav-tab-wrapper">
 						<a class="nav-tab nav-tab-active" href="#General">عمومی</a>
@@ -316,7 +314,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 								<tr valign="top">
 									<th scope="row">فرم پرداخت</th>
 									<td>
-									<?php 
+									<?php
 									$defualt_themes = scandir( $this->plugin_folder . 'includes/forms' );
 									foreach ( $defualt_themes as $theme ) {
 										if ( ! preg_match( '/.php/', $theme ) ) {
@@ -360,11 +358,11 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 
 	/**
 	 * Settings Init
-	 * 
+	 *
 	 * @return void
 	 */
 	public function settings_init() {
- 
+
 		// setting section
 		add_settings_section(
 			'bank_mellat_settings_section',
@@ -372,7 +370,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 			array( $this, 'settings_section_callback' ),
 			'bank_mellat_settings'
 		);
-		 
+
 		// setting field
 		add_settings_field(
 			'bank_mellat_settings_field_array',
@@ -381,14 +379,14 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 			'bank_mellat_settings',
 			'bank_mellat_settings_section'
 		);
-	 
+
 		// Register this field with our settings group.
 		register_setting( 'bank_mellat_settings_group', 'bank_mellat_settings_fields_arrays' );
 	}
 
 	/**
 	 * Settings section callback
-	 * 
+	 *
 	 * @return void
 	 */
 	public function settings_section_callback() {
@@ -397,7 +395,7 @@ final class Bank_Mellat_Settings extends \DediData\Singleton {
 
 	/**
 	 * Settings array
-	 * 
+	 *
 	 * @return void
 	 */
 	public function settings_array() {
